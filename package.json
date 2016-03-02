@@ -1,0 +1,27 @@
+{
+  "name": "sankey-layout",
+  "version": "0.1.0",
+  "description": "Sankey diagram layout",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "graphlib": "~2.1.0"
+  },
+  "devDependencies": {
+    "babel-core": "~6.5.2",
+    "babel-cli": "~6.5.1",
+    "babelify": "~7.2.0",
+    "babel-preset-es2015": "~6.5.0",
+    "tape": "~4.4.0",
+    "babel-tape-runner": "~2.0.1",
+    "jsdoc": "~3.4.0"
+  },
+  "scripts": {
+    "test": "babel-tape-runner test/node-ordering/*  | faucet",
+    "jsdoc": "jsdoc --package package.json -r lib/ -d docs"
+  },
+  "author": "Rick Lupton",
+  "license": "BSD"
+}

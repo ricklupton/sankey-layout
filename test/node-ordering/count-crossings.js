@@ -1,4 +1,4 @@
-import countCrossings, { countBetweenCrossings, countLoopCrossings } from '../count-crossings';
+import countCrossings, { countBetweenCrossings, countLoopCrossings } from 'lib/node-ordering/count-crossings';
 import { exampleTwoLevel, exampleTwoLevelWithLoops } from './examples';
 
 import { Graph } from 'graphlib';

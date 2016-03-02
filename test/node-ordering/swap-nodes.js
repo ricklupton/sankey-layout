@@ -1,4 +1,4 @@
-import swapNodes from '../swap-nodes';
+import swapNodes from 'lib/node-ordering/swap-nodes';
 import { exampleTwoLevel } from './examples';
 
 import { Graph } from 'graphlib';
