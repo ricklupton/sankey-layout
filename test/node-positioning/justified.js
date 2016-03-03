@@ -44,6 +44,7 @@ test('justifiedPositioning: basic positioning', t => {
     0.8 + 1 + 0.8 + 1 + 0.8 + 1 + 0.8,
     0.8], 1e-6, 'node y');
 
+  assertAlmostEqual(t, nodes.map(node => node.x), [0, 0, 0, 0, 1], 'node x');
   t.end();
 });
 
