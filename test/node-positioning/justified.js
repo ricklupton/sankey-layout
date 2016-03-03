@@ -4,7 +4,7 @@ import justified from 'lib/node-positioning/justified';
 import { Graph } from 'graphlib';
 import test from 'prova';
 
-import assertAlmostEqual from '../assert-almost-equal';
+import { assertAlmostEqual } from '../assert-almost-equal';
 
 
 test('justifiedPositioning: scaleToFit', t => {

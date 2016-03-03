@@ -17,7 +17,7 @@ function deepAlmostEqual(a, b, tol) {
 }
 
 
-export default function assertAlmostEqual(t, a, b, tol, msg, extra) {
+export function assertAlmostEqual(t, a, b, tol, msg, extra) {
   t._assert(deepAlmostEqual(a, b, tol), {
     message : defined(msg, 'should be almost equal'),
     operator : 'deepAlmostEqual',
@@ -28,8 +28,22 @@ export default function assertAlmostEqual(t, a, b, tol, msg, extra) {
 }
 
 
+export function assertNotAlmostEqual(t, a, b, tol, msg, extra) {
+  t._assert(!deepAlmostEqual(a, b, tol), {
+    message : defined(msg, 'should not be almost equal'),
+    operator : 'deepNotAlmostEqual',
+    actual : a,
+    notExpected : b,
+    extra : extra
+  });
+}
+
+
 export function install() {
   Test.prototype.deepAlmostEqual = function (a, b, tol, msg, extra) {
     assertAlmostEqual(this, a, b, tol, msg, extra);
+  };
+  Test.prototype.deepNotAlmostEqual = function (a, b, tol, msg, extra) {
+    assertNotAlmostEqual(this, a, b, tol, msg, extra);
   };
 }
