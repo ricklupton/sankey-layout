@@ -1,61 +1,31 @@
+import ordering from 'lib/node-ordering';
+import sankeyDiagram from 'lib/svg/diagram';
+
 import { Graph } from 'graphlib';
+import d3 from 'd3';
 import test from 'prova';
 
-import ordering from 'lib/node-ordering';
-import justified from 'lib/node-positioning/justified';
-import orderEdges from 'lib/edge-ordering';
-import flowLayout from 'lib/edge-positioning';
 
-import sankeyLayout from 'lib/layout';
+test('diagram', t => {
+  console.log('TEST!');
 
+  // prepare data
+  const {G, ranks} = exampleBlastFurnaceWithDummy();
+  const order = ordering(G, ranks);
 
-test('combined layout', t => {
-  // XXX TODO start from rank assignment
+  // diagram
 
-  //////// Steps ///////
+  const diagram = sankeyDiagram();
 
-  // Graph with dummy nodes
-  const {G: G1, ranks} = exampleBlastFurnaceWithDummy();
-
-  // Assign orders within ranks
-  const order = ordering(G1, ranks);
-
-  // Position and scale nodes within ranks
-  const pos = justified().size([10, 8]);
-  pos(G1, order);
-
-  // Order incoming and outgoing edges at each node
-  orderEdges(G1);
-
-  // Position edges and calculate curvatures
-  const flayout = flowLayout();
-  flayout(G1);
-
-  //////// Combined layout ////////
-
-  const layout = sankeyLayout()
-          .size([10, 8]);
-
-  const {G: G2} = exampleBlastFurnaceWithDummy();
-  layout(G2, ranks);
-
-  ///////// Compare ////////
-
-  t.deepEqual(G2.nodes(), G1.nodes(), 'node ids');
-  t.deepEqual(G2.nodes().map(u => G2.node(u)),
-              G1.nodes().map(u => G1.node(u)),
-              'node objects');
-
-  t.deepEqual(G2.edges(), G1.edges(), 'edge ids');
-  t.deepEqual(G2.edges().map(e => G2.edge(e)),
-              G1.edges().map(e => G1.edge(e)),
-              'edge objects');
+  d3.select('body').append('div')
+    .datum({graph: G, order: order})
+    .call(diagram);
 
   t.end();
 });
 
 
-export function exampleBlastFurnaceWithDummy() {
+function exampleBlastFurnaceWithDummy() {
   let G = new Graph({ directed: true });
 
   // Simplified example of flows through coke oven and blast furnace
@@ -101,6 +71,13 @@ export function exampleBlastFurnaceWithDummy() {
   G.setEdge('_bf_input_3', '_bf_input_4', {value: 0.5});
   G.setEdge('_bf_input_4', '_bf_input_5', {value: 0.5});
   G.setEdge('_bf_input_5', 'input', {value: 0.5});
+
+  // node directions
+  G.nodes().forEach(u => G.setNode(u, { direction: 'r', data: {} }));
+  ['_bf_input_1', '_bf_input_2', '_bf_input_3', '_bf_input_4', '_bf_input_5',
+   '_oven_input_1', '_oven_input_2'].forEach(u => {
+     G.setNode(u, { direction: 'l', data: {} });
+   });
 
   return {G, ranks};
 }

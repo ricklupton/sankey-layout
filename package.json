@@ -20,7 +20,8 @@
     "jsdoc": "~3.4.0",
     "prova": "~2.1.2",
     "almost-equal": "~1.0.0",
-    "defined": "~1.0.0"
+    "defined": "~1.0.0",
+    "babel-register": "~6.6.0"
   },
   "scripts": {
     "test": "babel-tape-runner test/node-ordering/*  | faucet",

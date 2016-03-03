@@ -21,6 +21,10 @@ test('flowLayout: flow endpoints', t => {
   t.deepEqual(flows.map(f => f.y0), [0.5, 3.5], 'f.y0');
   t.deepEqual(flows.map(f => f.y1), [2.5, 3.5], 'f.y1');
 
+  // directions
+  t.deepEqual(flows.map(f => f.d0), ['r', 'r'], 'f.d0');
+  t.deepEqual(flows.map(f => f.d1), ['r', 'r'], 'f.d1');
+
   t.end();
 });
 

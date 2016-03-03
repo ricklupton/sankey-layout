@@ -49,7 +49,7 @@ export function exampleBlastFurnaceWithDummy() {
   // Simplified example of flows through coke oven and blast furnace
   // Padded to have dummy nodes
 
-  let goodOrder = [
+  let ranks = [
     ['_bf_input_5', 'input', '_oven_input_2'],
     ['_bf_input_4', 'oven', '_oven_input_1', '_input_sinter_1'],
     ['_bf_input_3', 'coke', '_input_sinter_2', '_oven_export_1'],
@@ -57,12 +57,6 @@ export function exampleBlastFurnaceWithDummy() {
     ['_bf_input_1', 'bf', '_sinter_export', '_oven_export_3'],
     ['output', 'export'],
   ];
-
-  goodOrder.forEach((rank, i) => {
-    rank.forEach(node => {
-      G.setNode(node, { rank: i });
-    });
-  });
 
   // main flow
   G.setEdge('input', 'oven', {});
@@ -105,7 +99,7 @@ export function exampleBlastFurnaceWithDummy() {
     ['export', 'output'],
   ];
 
-  return {G, goodOrder, initialOrder};
+  return {G, ranks, initialOrder};
 }
 
 

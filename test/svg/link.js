@@ -152,8 +152,8 @@ test('link SVG: flow from forward to reverse node', t => {
     y0: 0,
     y1: 50,
     dy: 10,
-    source: { direction: 'r' },
-    target: { direction: 'l' },
+    d0: 'r',
+    d1: 'l',
   };
 
   // Arc: A rx ry theta large-arc-flag direction-flag x y
@@ -178,8 +178,8 @@ test('link SVG: flow from reverse to forward node', t => {
     y0: 0,
     y1: 50,
     dy: 10,
-    source: { direction: 'l' },
-    target: { direction: 'r' },
+    d0: 'l',
+    d1: 'r',
   };
 
   // Arc: A rx ry theta large-arc-flag direction-flag x y
@@ -204,8 +204,8 @@ test('link SVG: flow from reverse to reverse node', t => {
     y0: 0,
     y1: 0,
     dy: 10,
-    source: { direction: 'l' },
-    target: { direction: 'l' },
+    d0: 'l',
+    d1: 'l',
   };
 
   // Arc: A rx ry theta large-arc-flag direction-flag x y
@@ -230,8 +230,8 @@ test('link SVG: flow from forward to offstage node', t => {
     x1: 10,
     y1: 30,
     dy: 10,
-    source: { direction: 'r' },
-    target: { direction: 'd' },
+    d0: 'r',
+    d1: 'd',
   };
 
   // Arc: A rx ry theta large-arc-flag direction-flag x y
