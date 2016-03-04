@@ -7,8 +7,6 @@ import test from 'prova';
 
 
 test('diagram', t => {
-  console.log('TEST!');
-
   // prepare data
   const {G, ranks} = exampleBlastFurnaceWithDummy();
   const order = ordering(G, ranks);
@@ -17,9 +15,17 @@ test('diagram', t => {
 
   const diagram = sankeyDiagram();
 
-  d3.select('body').append('div')
+  const el = d3.select('body').append('div');
+
+  el
     .datum({graph: G, order: order})
     .call(diagram);
+
+  t.equal(el.selectAll('.node')[0].length, G.nodes().length,
+          'right number of nodes');
+
+  t.equal(el.selectAll('.link')[0].length, G.edges().length,
+          'right number of links');
 
   t.end();
 });

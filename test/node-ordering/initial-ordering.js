@@ -2,7 +2,7 @@ import initialOrdering from 'lib/node-ordering/initial-ordering';
 import { exampleBlastFurnaceWithDummy } from './examples';
 
 import { Graph } from 'graphlib';
-import test from 'tape';
+import test from 'prova';
 
 
 test('initialOrdering', t => {

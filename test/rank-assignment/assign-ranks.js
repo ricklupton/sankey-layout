@@ -22,6 +22,17 @@ test('rank assignment: overall', t => {
               [0, 1, 2, 2, 3, 0],
               'node ranks with rankSets');
 
+  // Edges are still in original orientation
+  t.deepEqual(G.edges(), [
+    {v: 'a', w: 'b'},
+    {v: 'b', w: 'c'},
+    {v: 'a', w: 'd'},
+    {v: 'c', w: 'e'},
+    {v: 'd', w: 'e'},
+    {v: 'e', w: 'b'},
+    {v: 'f', w: 'c'},
+  ], 'edges');
+
   t.end();
 });
 

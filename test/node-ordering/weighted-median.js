@@ -2,7 +2,7 @@ import sortNodes, { medianValue, neighbourPositions } from 'lib/node-ordering/we
 import { exampleTwoLevel, exampleTwoLevelWithLoops } from './examples';
 
 import { Graph } from 'graphlib';
-import test from 'tape';
+import test from 'prova';
 
 
 test('medianValue', t => {

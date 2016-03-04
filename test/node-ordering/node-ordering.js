@@ -2,7 +2,7 @@ import ordering from 'lib/node-ordering';
 import { exampleBlastFurnaceWithDummy } from './examples';
 
 import { Graph } from 'graphlib';
-import test from 'tape';
+import test from 'prova';
 
 
 test('iterateSwappingNodes', t => {
