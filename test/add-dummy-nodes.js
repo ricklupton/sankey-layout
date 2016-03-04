@@ -1,23 +1,20 @@
-import graphWithDummyNodes from 'lib/graph-with-dummy-nodes';
+import addDummyNodes from 'lib/add-dummy-nodes';
+import createGraph from 'lib/utils';
 
+import { Graph } from 'graphlib';
 import test from 'prova';
 
 
-test('graph with dummy nodes', t => {
-  // required?
-  const nodes = [
-    {id: 'c', title: 'CC'},
-  ];
+test('addDummyNodes', t => {
+  const G = new Graph({directed: true});
 
-  const edges = [
-    {source: 'a', target: 'b'},
-    {source: 'b', target: 'c'},
-    {source: 'a', target: 'd', extra: 42 },
-    {source: 'c', target: 'e'},
-    {source: 'd', target: 'e'},
-    {source: 'e', target: 'b'},
-    {source: 'f', target: 'c'},
-  ];
+  G.setEdge('a', 'b', {data: {}});
+  G.setEdge('b', 'c', {data: {}});
+  G.setEdge('a', 'd', {data: {extra: 42}});
+  G.setEdge('c', 'e', {data: {}});
+  G.setEdge('d', 'e', {data: {}});
+  G.setEdge('e', 'b', {data: {}});
+  G.setEdge('f', 'c', {data: {}});
 
   const ranks = [
     ['a', 'f'],
@@ -26,7 +23,15 @@ test('graph with dummy nodes', t => {
     ['e'],
   ];
 
-  const G = graphWithDummyNodes(nodes, edges, ranks);
+  ranks.forEach((rank, i) => {
+    rank.forEach(u => {
+      G.setNode(u, { rank: i, data: {} });
+    });
+  });
+
+  G.node('c').data = { title: 'CC' };
+
+  addDummyNodes(G);
 
   assertSetEqual(t, G.nodes(),
                  ['__a_d_1',
@@ -38,13 +43,13 @@ test('graph with dummy nodes', t => {
 
   t.deepEqual(G.node('a'), { rank: 0, data: {} }, 'node label a');
   t.deepEqual(G.node('__e_b_1'), { rank: 1, dummy: true, data: null, direction: 'l' }, 'node label __e_b_1');
-  t.deepEqual(G.node('c'), { rank: 2, data: { id: 'c', title: 'CC' } }, 'node label c');
+  t.deepEqual(G.node('c'), { rank: 2, data: { title: 'CC' } }, 'node label c');
 
   t.deepEqual(G.edge('a', 'b'),
-              { data: { source: 'a', target: 'b' } },
+              { data: {} },
               'edge label a-b');
   t.deepEqual(G.edge('a', '__a_d_1'),
-              { data: { source: 'a', target: 'd', extra: 42 } },
+              { data: { extra: 42 } },
               'edge label a-d');
 
   t.end();

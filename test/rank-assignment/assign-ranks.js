@@ -8,20 +8,26 @@ test('rank assignment: overall', t => {
   let { G, rankSets } = exampleWithLoop();
 
   // Without rankSets
-  const rank1 = assignRanks(G, []);
+  assignRanks(G, []);
+  const rank1 = G.nodes().map(u => [u, G.node(u).rank]);
   t.deepEqual(rank1, [
-    ['a', 'f'],
-    ['b', 'd'],
-    ['c'],
-    ['e'],
+    ['a', 0],
+    ['b', 1],
+    ['c', 2],
+    ['d', 1],
+    ['e', 3],
+    ['f', 0],
   ], 'node ranks without rankSets');
 
-  const rank2 = assignRanks(G, rankSets);
+  assignRanks(G, rankSets);
+  const rank2 = G.nodes().map(u => [u, G.node(u).rank]);
   t.deepEqual(rank2, [
-    ['a', 'f'],
-    ['b'],
-    ['c', 'd'],
-    ['e'],
+    ['a', 0],
+    ['b', 1],
+    ['c', 2],
+    ['d', 2],
+    ['e', 3],
+    ['f', 0],
   ], 'node ranks with rankSets');
 
   // Edges are still in original orientation

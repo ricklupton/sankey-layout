@@ -1,6 +1,8 @@
 import ordering from 'lib/node-ordering';
 import sankeyDiagram from 'lib/svg/diagram';
-import graphWithDummyNodes from 'lib/graph-with-dummy-nodes';
+import addDummyNodes from 'lib/add-dummy-nodes';
+import assignRanks from 'lib/rank-assignment';
+import { createGraph } from 'lib/utils';
 
 import d3 from 'd3';
 import test from 'prova';
@@ -10,8 +12,9 @@ test('diagram', t => {
   // prepare data
   const {nodes, edges, ranks} = exampleBlastFurnace();
 
-  const G = graphWithDummyNodes(nodes, edges, ranks);
-  console.log(G.nodes().map(u => [u, G.node(u)]));
+  const G = createGraph(nodes, edges);
+  assignRanks(G, []);
+  addDummyNodes(G);
   const order = ordering(G);
 
   // diagram
