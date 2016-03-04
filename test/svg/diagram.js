@@ -10,7 +10,7 @@ import test from 'prova';
 
 test('diagram', t => {
   // prepare data
-  const {nodes, edges, ranks} = exampleBlastFurnace();
+  const {nodes, edges} = exampleBlastFurnace();
 
   const G = createGraph(nodes, edges);
   assignRanks(G, []);
@@ -38,20 +38,7 @@ test('diagram', t => {
 
 
 function exampleBlastFurnace() {
-  // let G = new Graph({ directed: true });
-
   // Simplified example of flows through coke oven and blast furnace
-  // Padded to have dummy nodes
-
-  let ranks = [
-    ['input'],
-    ['oven'],
-    ['coke'],
-    ['sinter'],
-    ['bf'],
-    ['output', 'export'],
-  ];
-
   const nodes = [
   ];
 
@@ -75,12 +62,5 @@ function exampleBlastFurnace() {
     {source: 'bf', target: 'input', value: 0.5},
   ];
 
-  // // node directions
-  // G.nodes().forEach(u => G.setNode(u, { direction: 'r', data: {} }));
-  // ['_bf_input_1', '_bf_input_2', '_bf_input_3', '_bf_input_4', '_bf_input_5',
-  //  '_oven_input_1', '_oven_input_2'].forEach(u => {
-  //    G.setNode(u, { direction: 'l', data: {} });
-  //  });
-
-  return {nodes, edges, ranks};
+  return {nodes, edges};
 }
