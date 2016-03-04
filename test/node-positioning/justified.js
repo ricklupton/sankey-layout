@@ -51,7 +51,7 @@ test('justifiedPositioning: basic positioning', t => {
 
 test('justifiedPositioning: nodes with zero value are ignored', t => {
   const {G, order} = example4to1();
-  G.setEdge('2', '4', {value: 0});
+  G.setEdge('2', '4', {data: {value: 0}});
 
   const pos = justified();
   pos(G, order);
@@ -78,10 +78,12 @@ function example4to1() {
   //       ,-|
   // 3|---/
   //
-  G.setEdge('0', '4', {value: 5});
-  G.setEdge('1', '4', {value: 5});
-  G.setEdge('2', '4', {value: 5});
-  G.setEdge('3', '4', {value: 5});
+  G.setEdge('0', '4', {data: {value: 5}});
+  G.setEdge('1', '4', {data: {value: 5}});
+  G.setEdge('2', '4', {data: {value: 5}});
+  G.setEdge('3', '4', {data: {value: 5}});
+
+  G.nodes().forEach(u => G.setNode(u, { data: {} }));
 
   let order = [
     ['0', '1', '2', '3'],

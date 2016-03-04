@@ -6,8 +6,8 @@ import test from 'prova';
 
 
 test('iterateSwappingNodes', t => {
-  let {G, ranks} = exampleBlastFurnaceWithDummy();
-  let order = ordering(G, ranks);
+  let {G} = exampleBlastFurnaceWithDummy();
+  let order = ordering(G);
 
   let expected = [
     ['_oven_input_2', '_bf_input_5', 'input'],

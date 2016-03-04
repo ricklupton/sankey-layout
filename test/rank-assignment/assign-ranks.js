@@ -7,20 +7,22 @@ import test from 'prova';
 test('rank assignment: overall', t => {
   let { G, rankSets } = exampleWithLoop();
 
-  // Check node order
-  t.deepEqual(G.nodes(), ['a', 'b', 'c', 'd', 'e', 'f'],
-              'nodes');
-
   // Without rankSets
-  assignRanks(G, []);
-  t.deepEqual(G.nodes().map(u => G.node(u).rank),
-              [0, 1, 2, 1, 3, 0],
-              'node ranks without rankSets');
+  const rank1 = assignRanks(G, []);
+  t.deepEqual(rank1, [
+    ['a', 'f'],
+    ['b', 'd'],
+    ['c'],
+    ['e'],
+  ], 'node ranks without rankSets');
 
-  assignRanks(G, rankSets);
-  t.deepEqual(G.nodes().map(u => G.node(u).rank),
-              [0, 1, 2, 2, 3, 0],
-              'node ranks with rankSets');
+  const rank2 = assignRanks(G, rankSets);
+  t.deepEqual(rank2, [
+    ['a', 'f'],
+    ['b'],
+    ['c', 'd'],
+    ['e'],
+  ], 'node ranks with rankSets');
 
   // Edges are still in original orientation
   t.deepEqual(G.edges(), [

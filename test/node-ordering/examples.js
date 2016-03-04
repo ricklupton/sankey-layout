@@ -58,6 +58,12 @@ export function exampleBlastFurnaceWithDummy() {
     ['output', 'export'],
   ];
 
+  ranks.forEach((rank, i) => {
+    rank.forEach(u => {
+      G.setNode(u, { rank: i });
+    });
+  });
+
   // main flow
   G.setEdge('input', 'oven', {});
   G.setEdge('oven', 'coke', {});

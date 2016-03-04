@@ -15,10 +15,10 @@ test('combined layout', t => {
   //////// Steps ///////
 
   // Graph with dummy nodes
-  const {G: G1, ranks} = exampleBlastFurnaceWithDummy();
+  const {G: G1} = exampleBlastFurnaceWithDummy();
 
   // Assign orders within ranks
-  const order = ordering(G1, ranks);
+  const order = ordering(G1);
 
   // Position and scale nodes within ranks
   const pos = justified().size([10, 8]);
@@ -37,7 +37,7 @@ test('combined layout', t => {
           .size([10, 8]);
 
   const {G: G2} = exampleBlastFurnaceWithDummy();
-  layout(G2, ranks);
+  layout(G2);
 
   ///////// Compare ////////
 
@@ -70,37 +70,43 @@ export function exampleBlastFurnaceWithDummy() {
     ['output', 'export'],
   ];
 
+  ranks.forEach((rank, i) => {
+    rank.forEach(u => {
+      G.setNode(u, { rank: i, data: {} });
+    });
+  });
+
   // main flow
-  G.setEdge('input', 'oven', {value: 2.5});
-  G.setEdge('oven', 'coke', {value: 2.5});
-  G.setEdge('coke', 'sinter', {value: 1});
-  G.setEdge('coke', '_coke_bf', {value: 1.5});
-  G.setEdge('_coke_bf', 'bf', {value: 1.5});
-  G.setEdge('sinter', 'bf', {value: 1});
-  G.setEdge('bf', 'output', {value: 1});
-  G.setEdge('bf', 'export', {value: 1});
+  G.setEdge('input', 'oven', {data: {value: 2.5}});
+  G.setEdge('oven', 'coke', {data: {value: 2.5}});
+  G.setEdge('coke', 'sinter', {data: {value: 1}});
+  G.setEdge('coke', '_coke_bf', {data: {value: 1.5}});
+  G.setEdge('_coke_bf', 'bf', {data: {value: 1.5}});
+  G.setEdge('sinter', 'bf', {data: {value: 1}});
+  G.setEdge('bf', 'output', {data: {value: 1}});
+  G.setEdge('bf', 'export', {data: {value: 1}});
 
   // additional export flows, and input-sinter
-  G.setEdge('sinter', '_sinter_export', {value: 0.2});
-  G.setEdge('_sinter_export', 'export', {value: 0.2});
-  G.setEdge('oven', '_oven_export_1', {value: 0.2});
-  G.setEdge('_oven_export_1', '_oven_export_2', {value: 0.2});
-  G.setEdge('_oven_export_2', '_oven_export_3', {value: 0.2});
-  G.setEdge('_oven_export_3', 'export', {value: 0.2});
-  G.setEdge('input', '_input_sinter_1', {value: 0.2});
-  G.setEdge('_input_sinter_1', '_input_sinter_2', {value: 0.2});
-  G.setEdge('_input_sinter_2', 'sinter', {value: 0.2});
+  G.setEdge('sinter', '_sinter_export', {data: {value: 0.2}});
+  G.setEdge('_sinter_export', 'export', {data: {value: 0.2}});
+  G.setEdge('oven', '_oven_export_1', {data: {value: 0.2}});
+  G.setEdge('_oven_export_1', '_oven_export_2', {data: {value: 0.2}});
+  G.setEdge('_oven_export_2', '_oven_export_3', {data: {value: 0.2}});
+  G.setEdge('_oven_export_3', 'export', {data: {value: 0.2}});
+  G.setEdge('input', '_input_sinter_1', {data: {value: 0.2}});
+  G.setEdge('_input_sinter_1', '_input_sinter_2', {data: {value: 0.2}});
+  G.setEdge('_input_sinter_2', 'sinter', {data: {value: 0.2}});
 
   // return loops
-  G.setEdge('oven', '_oven_input_1', {value: 0.5});
-  G.setEdge('_oven_input_1', '_oven_input_2', {value: 0.5});
-  G.setEdge('_oven_input_2', 'input', {value: 0.5});
-  G.setEdge('bf', '_bf_input_1', {value: 0.5});
-  G.setEdge('_bf_input_1', '_bf_input_2', {value: 0.5});
-  G.setEdge('_bf_input_2', '_bf_input_3', {value: 0.5});
-  G.setEdge('_bf_input_3', '_bf_input_4', {value: 0.5});
-  G.setEdge('_bf_input_4', '_bf_input_5', {value: 0.5});
-  G.setEdge('_bf_input_5', 'input', {value: 0.5});
+  G.setEdge('oven', '_oven_input_1', {data: {value: 0.5}});
+  G.setEdge('_oven_input_1', '_oven_input_2', {data: {value: 0.5}});
+  G.setEdge('_oven_input_2', 'input', {data: {value: 0.5}});
+  G.setEdge('bf', '_bf_input_1', {data: {value: 0.5}});
+  G.setEdge('_bf_input_1', '_bf_input_2', {data: {value: 0.5}});
+  G.setEdge('_bf_input_2', '_bf_input_3', {data: {value: 0.5}});
+  G.setEdge('_bf_input_3', '_bf_input_4', {data: {value: 0.5}});
+  G.setEdge('_bf_input_4', '_bf_input_5', {data: {value: 0.5}});
+  G.setEdge('_bf_input_5', 'input', {data: {value: 0.5}});
 
   return {G, ranks};
 }
