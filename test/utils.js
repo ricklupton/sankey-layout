@@ -25,5 +25,9 @@ test('createGraph', t => {
 
   t.deepEqual(G.node('c'), { data: { id: 'c', title: 'CC' }});
 
+  nodes.push({id: 'xx'});
+  t.doesNotThrow(() => { createGraph(nodes, edges); },
+                 'ignores non-existant node ids');
+
   t.end();
 });
