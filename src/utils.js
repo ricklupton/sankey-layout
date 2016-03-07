@@ -13,6 +13,10 @@ export function createGraph(nodes, edges) {
   nodes.forEach(node => {
     if (G.hasNode(node.id))
       G.node(node.id).data = node;
+
+    // XXX should be configurable?
+    if (node.direction !== undefined)
+      G.node(node.id).direction = node.direction;
   });
 
   return G;

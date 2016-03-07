@@ -49,8 +49,8 @@ test('rank assignment: groupedGraph with reversed nodes', t => {
   G.setEdge('a', 'b');
   G.setEdge('a', 'c');
   G.setEdge('c', 'd');
-  G.setNode('c', { reversed: true });
-  G.setNode('d', { reversed: true });
+  G.setNode('c', { direction: 'l' });
+  G.setNode('d', { direction: 'l' });
 
   let G2 = groupedGraph(G, []);
 

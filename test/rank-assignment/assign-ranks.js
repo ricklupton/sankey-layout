@@ -71,8 +71,8 @@ function exampleWithLoop() {
   G.setEdge('d', 'g');
   G.setEdge('g', 'h');
 
-  G.setNode('g', { reversed: true });
-  G.setNode('h', { reversed: true });
+  G.setNode('g', { direction: 'l' });
+  G.setNode('h', { direction: 'l' });
 
   const rankSets = [
     { type: 'same', nodes: ['c', 'd'] },

@@ -1,6 +1,13 @@
 import { Graph } from 'graphlib';
 
 
+/**
+ * Create a new graph where nodes in the same rank set are merged into one node.
+ *
+ * Depends on the "direction" attribute of the nodes in G, and the "delta"
+ * atribute of the edges.
+ *
+ */
 export default function groupedGraph(G, rankSets) {
   // Not multigraph because this is only used for calculating ranks
   const GG = new Graph({directed: true});
@@ -59,11 +66,11 @@ export default function groupedGraph(G, rankSets) {
           W = G.node(e.w) || {};
 
     const edge = GG.edge(source, target) || { delta: 0 };
-    if (V.reversed) {
-      edge.delta = Math.max(edge.delta, W.reversed ? 1 : 0);
+    if (V.direction === 'l') {
+      edge.delta = Math.max(edge.delta, W.direction === 'l' ? 1 : 0);
       GG.setEdge(target, source, edge);
     } else {
-      edge.delta = Math.max(edge.delta, W.reversed ? 0 : 1);
+      edge.delta = Math.max(edge.delta, W.direction === 'l' ? 0 : 1);
       GG.setEdge(source, target, edge);
     }
   });
