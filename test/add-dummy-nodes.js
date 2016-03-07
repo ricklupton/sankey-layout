@@ -55,3 +55,45 @@ test('addDummyNodes', t => {
 
   t.end();
 });
+
+
+test('addDummyNodes: reversed nodes', t => {
+
+  // left to left
+  const G1 = new Graph({directed: true});
+  G1.setEdge('a', 'b', {data: {}});
+  G1.setNode('a', { rank: 1, direction: 'l' });
+  G1.setNode('b', { rank: 0, direction: 'l' });
+  addDummyNodes(G1);
+
+  assertSetEqual(t, G1.nodes(), ['a', 'b'], 'G1 nodes');
+  assertSetEqual(t, G1.edges(), [{v: 'a', w: 'b'}], 'G1 edges');
+
+  // right to left
+  const G2 = new Graph({directed: true});
+  G2.setEdge('a', 'b', {data: {}});
+  G2.setNode('a', { rank: 1, direction: 'r' });
+  G2.setNode('b', { rank: 0, direction: 'l' });
+  addDummyNodes(G2);
+
+  assertSetEqual(t, G2.nodes(), ['a', 'b', '__a_b_1'], 'G2 nodes');
+  assertSetEqual(t, G2.edges(), [
+    {v: 'a', w: '__a_b_1'},
+    {v: '__a_b_1', w: 'b'},
+  ], 'G2 edges');
+
+  // right to left
+  const G3 = new Graph({directed: true});
+  G3.setEdge('a', 'b', {data: {}});
+  G3.setNode('a', { rank: 1, direction: 'l' });
+  G3.setNode('b', { rank: 0, direction: 'r' });
+  addDummyNodes(G3);
+
+  assertSetEqual(t, G3.nodes(), ['a', 'b', '__a_b_0'], 'G3 nodes');
+  assertSetEqual(t, G3.edges(), [
+    {v: 'a', w: '__a_b_0'},
+    {v: '__a_b_0', w: 'b'},
+  ], 'G3 edges');
+
+  t.end();
+});

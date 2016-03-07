@@ -14,10 +14,13 @@ export default function addDummyNodes(G) {
 
     } else if (r > W.rank) {
       // add more to get backwards
-      dummyRanks.push(r);
-      while (r-- > W.rank) {
+      if (V.direction !== 'l')
+        dummyRanks.push(r);  // turn around
+      while (r-- > W.rank + 1) {
         dummyRanks.push(r);
       }
+      if (W.direction !== 'l')
+        dummyRanks.push(r);  // turn around
       replaceEdge(G, e, dummyRanks, 'l');
     }
   });
