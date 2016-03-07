@@ -7,7 +7,10 @@
     "test": "test"
   },
   "dependencies": {
-    "graphlib": "~2.1.0"
+    "graphlib": "~2.1.0",
+    "lodash.isfunction": "~3.0.8",
+    "lodash.sumby": "~4.2.0",
+    "lodash.max": "~4.0.0"
   },
   "devDependencies": {
     "babel-core": "~6.5.2",
@@ -21,7 +24,8 @@
     "tape": "~4.5.0",
     "nyc": "~6.0.0",
     "babel-register": "~6.6.5",
-    "babel-tape-runner": "~2.0.1"
+    "babel-tape-runner": "~2.0.1",
+    "coveralls": "~2.11.8"
   },
   "scripts": {
     "prepublish": "npm run build",

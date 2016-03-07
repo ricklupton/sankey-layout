@@ -4,8 +4,6 @@
  * @module layout
  */
 
-import d3 from 'd3';
-
 import { createGraph } from './utils';
 import assignRanks from './rank-assignment';
 import addDummyNodes from './add-dummy-nodes';

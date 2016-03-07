@@ -6,7 +6,9 @@
  * @module node-positioning/justified
  */
 
-import d3 from 'd3';
+import max from 'lodash.max';
+import sumBy from 'lodash.sumby';
+import isFunction from 'lodash.isfunction';
 
 
 export default function justifiedPositioning() {
@@ -33,14 +35,14 @@ export default function justifiedPositioning() {
     let x = 0;
     order.forEach(rank => {
       const height = size[1] - 2*margin;
-      const total = d3.sum(rank, u => G.node(u).dy);
+      const total = sumBy(rank, u => G.node(u).dy);
       const gaps = rank.map((u, i) => {
         const node = G.node(u);
         if (!node.value) return 0;
         return rank[i+1] ? separation(rank[i], rank[i+1], G) : 0;
       });
       const space = Math.max(0, height - total);
-      const kg = d3.sum(gaps) ? space / d3.sum(gaps) : 0;
+      const kg = sumBy(gaps) ? space / sumBy(gaps) : 0;
 
       // if (rank.length === 1) {
       //   y += space / 2;
@@ -80,7 +82,7 @@ export default function justifiedPositioning() {
   position.scaleToFit = function(G, order) {
     setNodeValues(G, edgeValue, nodeDirection);
 
-    const maxValue = d3.max(order, rank => d3.sum(rank, u => G.node(u).value));
+    const maxValue = max(order.map(rank => sumBy(rank, u => G.node(u).value)));
     if (maxValue <= 0) throw Error('no value');
 
     scale = size[1] / maxValue;
@@ -95,7 +97,7 @@ export default function justifiedPositioning() {
 
   position.separation = function(x) {
     if (!arguments.length) return separation;
-    separation = d3.functor(x);
+    separation = isFunction(x) ? x : (() => x);
     return position;
   };
 
@@ -117,8 +119,8 @@ export default function justifiedPositioning() {
 
 function setNodeValues(G, edgeValue, nodeDirection) {
   G.nodes().forEach(n => {
-    const incoming = d3.sum(G.inEdges(n), e => edgeValue(G.edge(e))),
-          outgoing = d3.sum(G.outEdges(n), e => edgeValue(G.edge(e)));
+    const incoming = sumBy(G.inEdges(n), e => edgeValue(G.edge(e))),
+          outgoing = sumBy(G.outEdges(n), e => edgeValue(G.edge(e)));
     let node = G.node(n);
     if (!node) G.setNode(n, node = {});
     node.value = Math.max(incoming, outgoing);
