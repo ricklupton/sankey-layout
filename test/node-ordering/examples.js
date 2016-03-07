@@ -26,13 +26,13 @@ export function exampleTwoLevel() {
 }
 
 
-export function exampleTwoLevelWithLoops() {
-  let G = new Graph({ directed: true });
+export function exampleTwoLevelWithLoops(material=undefined) {
+  let G = new Graph({ directed: true, multigraph: material !== undefined });
 
-  G.setEdge('n0', 's0', {});
-  G.setEdge('n0', 'n2', {});  // loop
-  G.setEdge('n1', 's0', {});
-  G.setEdge('n2', 's1', {});
+  G.setEdge('n0', 's0', {}, material);
+  G.setEdge('n0', 'n2', {}, material);  // loop
+  G.setEdge('n1', 's0', {}, material);
+  G.setEdge('n2', 's1', {}, material);
 
   let order = [
     ['n0', 'n1', 'n2'],

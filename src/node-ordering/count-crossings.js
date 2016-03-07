@@ -87,11 +87,10 @@ export function countLoopCrossings(G, orderA, orderB) {
       crossB = orderB.map(d => 0);
 
   orderA.forEach((u, i) => {
-    G.successors(u).forEach(v => {
-      if (u !== v && !G.edge(u, v).reverse) {
-        let index = orderA.indexOf(v);
+    G.outEdges(u).forEach(e => {
+      if (e.v !== e.w && !G.edge(e).reverse) {
+        let index = orderA.indexOf(e.w);
         if (index >= 0) {
-          // console.log('edge A', u, v, index, i);
           if (i > index) {
             let j = index + 1;
             while (j < i) {
@@ -103,18 +102,16 @@ export function countLoopCrossings(G, orderA, orderB) {
               crossA[j++] += 1;
             }
           }
-          // console.log(crossA);
         }
       }
     });
   });
 
   orderB.forEach((u, i) => {
-    G.successors(u).forEach(v => {
-      if (u !== v && G.edge(u, v).reverse) {
-        let index = orderB.indexOf(v);
+    G.outEdges(u).forEach(e => {
+      if (e.v !== e.w && G.edge(e).reverse) {
+        let index = orderB.indexOf(e.w);
         if (index >= 0) {
-          // console.log('edge B', u, v, index, i);
           if (i > index) {
             let j = index + 1;
             while (j < i) {
@@ -126,7 +123,6 @@ export function countLoopCrossings(G, orderA, orderB) {
               crossB[j++] += 1;
             }
           }
-          // console.log(crossB);
         }
       }
     });
@@ -135,10 +131,8 @@ export function countLoopCrossings(G, orderA, orderB) {
   let count = 0;
   orderA.forEach((u, i) => {
     orderB.forEach((v, j) => {
-      if (G.hasEdge(u, v) || G.hasEdge(v, u)) {
-        count += crossA[i];
-        count += crossB[j];
-      }
+      const N = G.nodeEdges(u, v).length;
+      count += N * (crossA[i] + crossB[j]);
     });
   });
 

@@ -29,3 +29,12 @@ test('countLoopCrossings', t => {
   t.equal(count, 1);
   t.end();
 });
+
+
+test('countLoopCrossings: materials', t => {
+  const {G, order} = exampleTwoLevelWithLoops('m');
+
+  const count = countLoopCrossings(G, order[0], order[1]);
+  t.equal(count, 1);
+  t.end();
+});
