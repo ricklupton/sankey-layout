@@ -1,4 +1,4 @@
-import sortNodes, { medianValue, neighbourPositions } from 'lib/node-ordering/weighted-median';
+import sortNodes, { medianValue, neighbourPositions } from '../../src/node-ordering/weighted-median';
 import { exampleTwoLevel, exampleTwoLevelWithLoops } from './examples';
 
 import { Graph } from 'graphlib';

@@ -1,4 +1,4 @@
-import { createGraph } from 'lib/utils';
+import { createGraph } from '../src/utils';
 
 import test from 'prova';
 

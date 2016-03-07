@@ -1,4 +1,4 @@
-import assignInitialRanks from 'lib/rank-assignment/initial-rank';
+import assignInitialRanks from '../../src/rank-assignment/initial-rank';
 
 import { Graph } from 'graphlib';
 import test from 'prova';

@@ -1,4 +1,4 @@
-import assignRanks from 'lib/rank-assignment';
+import assignRanks from '../../src/rank-assignment';
 
 import { Graph } from 'graphlib';
 import test from 'prova';
@@ -17,6 +17,8 @@ test('rank assignment: overall', t => {
     ['d', 1],
     ['e', 3],
     ['f', 0],
+    ['g', 1],
+    ['h', 0],
   ], 'node ranks without rankSets');
 
   assignRanks(G, rankSets);
@@ -28,6 +30,8 @@ test('rank assignment: overall', t => {
     ['d', 2],
     ['e', 3],
     ['f', 0],
+    ['g', 2],
+    ['h', 0],  // this is the initial ranking -- haven't shorted g-h
   ], 'node ranks with rankSets');
 
   // Edges are still in original orientation
@@ -39,6 +43,8 @@ test('rank assignment: overall', t => {
     {v: 'd', w: 'e'},
     {v: 'e', w: 'b'},
     {v: 'f', w: 'c'},
+    {v: 'd', w: 'g'},
+    {v: 'g', w: 'h'},
   ], 'edges');
 
   t.end();
@@ -46,6 +52,13 @@ test('rank assignment: overall', t => {
 
 
 function exampleWithLoop() {
+  //
+  //  f -------,    b<-,
+  //  a -- b -- c -- e `
+  //    `------ d -'
+  //              \
+  //      <h---<g-`
+  //
   const G = new Graph({directed: true});
 
   G.setEdge('a', 'b');
@@ -55,6 +68,11 @@ function exampleWithLoop() {
   G.setEdge('d', 'e');
   G.setEdge('e', 'b');
   G.setEdge('f', 'c');
+  G.setEdge('d', 'g');
+  G.setEdge('g', 'h');
+
+  G.setNode('g', { reversed: true });
+  G.setNode('h', { reversed: true });
 
   const rankSets = [
     { type: 'same', nodes: ['c', 'd'] },

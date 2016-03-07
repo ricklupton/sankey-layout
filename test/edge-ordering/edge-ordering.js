@@ -1,4 +1,4 @@
-import orderEdges from 'lib/edge-ordering';
+import orderEdges from '../../src/edge-ordering';
 
 import { Graph } from 'graphlib';
 import test from 'prova';

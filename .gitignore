@@ -52,3 +52,5 @@ jspm_packages
 
 .tern-port
 /docs
+.nyc_output
+/lib/

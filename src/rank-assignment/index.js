@@ -10,8 +10,11 @@ export default function assignRanks(G, rankSets) {
   // Group nodes together, and add additional edges from Smin to sources
   const GG = groupedGraph(G, rankSets);
 
+  // Add additional edges from Smin to sources
+  addTemporaryEdges(GG);
+
   // Make the graph acyclic
-  makeAcyclic(GG, '__S0');
+  makeAcyclic(GG, '0');
 
   // Assign the initial ranks
   assignInitialRanks(GG);
@@ -25,12 +28,26 @@ export default function assignRanks(G, rankSets) {
 
   GG.nodes().forEach(u => {
     const node = GG.node(u);
-    if (node.set) {
-      node.set.nodes.forEach(v => {
-        G.node(v).rank = node.rank;
-      });
-    } else {
-      G.node(u).rank = node.rank;
+    node.nodes.forEach(v => {
+      G.node(v).rank = node.rank;
+    });
+  });
+}
+
+
+function addTemporaryEdges(GG) {
+  // Add temporary edges between Smin and sources
+  GG.sources().forEach(u => {
+    if (u !== '0') {
+      GG.setEdge('0', u, { temp: true, delta: 0 });
     }
   });
+
+  // XXX Should also add edges from sinks to Smax
+
+  // G.nodes().forEach(u => {
+  //   if (!nodeSets.has(u)) {
+  //     GG.
+  //   }
+  // });
 }

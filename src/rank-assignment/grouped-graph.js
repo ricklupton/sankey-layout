@@ -26,14 +26,22 @@ export default function groupedGraph(G, rankSets) {
 
   // Construct map of node ids to the set they are in, if any
   const nodeSets = new Map();
-  rankSets.forEach((set, i) => {
-    const id = `__S${i}`;
+  let i = 0;
+  rankSets.forEach(set => {
+    if (!set.nodes || set.nodes.length === 0) return;
+    const id = `${i++}`;
     set.nodes.forEach(n => {
       nodeSets.set(n, id);
     });
+    GG.setNode(id, { type: set.type, nodes: set.nodes });
+  });
 
-    if (set.nodes.length) {
-      GG.setNode(id, { set: set });
+  G.nodes().forEach(u => {
+    if (!nodeSets.has(u)) {
+      const id = `${i++}`;
+      const set = { type: 'same', nodes: [u] };
+      nodeSets.set(u, id);
+      GG.setNode(id, set);
     }
   });
 
@@ -41,23 +49,24 @@ export default function groupedGraph(G, rankSets) {
   G.edges().forEach(e => {
     const source = nodeSets.has(e.v) ? nodeSets.get(e.v) : e.v,
           target = nodeSets.has(e.w) ? nodeSets.get(e.w) : e.w;
-    GG.setEdge(source, target, {});
-  });
 
-  // Add temporary edges between Smin and sources
-  G.sources().forEach(u => {
-    if (nodeSets.get(u) !== '__S0') {
-      GG.setEdge('__S0', u, { temp: true, delta: 0 });
+    // Minimum edge length depends on direction of nodes:
+    //  -> to -> : 1
+    //  -> to <- : 0
+    //  <- to -> : 0 (in opposite direction??)
+    //  <- to <- : 1 in opposite direction
+    const V = G.node(e.v) || {},
+          W = G.node(e.w) || {};
+
+    const edge = GG.edge(source, target) || { delta: 0 };
+    if (V.reversed) {
+      edge.delta = Math.max(edge.delta, W.reversed ? 1 : 0);
+      GG.setEdge(target, source, edge);
+    } else {
+      edge.delta = Math.max(edge.delta, W.reversed ? 0 : 1);
+      GG.setEdge(source, target, edge);
     }
   });
-
-  // XXX Should also add edges from sinks to Smax
-
-  // G.nodes().forEach(u => {
-  //   if (!nodeSets.has(u)) {
-  //     GG.
-  //   }
-  // });
 
   return GG;
 }

@@ -1,15 +1,15 @@
 import { Graph } from 'graphlib';
 import test from 'prova';
 
-import { createGraph } from 'lib/utils';
-import assignRanks from 'lib/rank-assignment';
-import addDummyNodes from 'lib/add-dummy-nodes';
-import ordering from 'lib/node-ordering';
-import justified from 'lib/node-positioning/justified';
-import orderEdges from 'lib/edge-ordering';
-import flowLayout from 'lib/edge-positioning';
+import { createGraph } from '../src/utils';
+import assignRanks from '../src/rank-assignment';
+import addDummyNodes from '../src/add-dummy-nodes';
+import ordering from '../src/node-ordering';
+import justified from '../src/node-positioning/justified';
+import orderEdges from '../src/edge-ordering';
+import flowLayout from '../src/edge-positioning';
 
-import sankeyLayout from 'lib/layout';
+import sankeyLayout from '../src/layout';
 
 
 test('combined layout', t => {

@@ -1,4 +1,4 @@
-import flowLayout from 'lib/edge-positioning';
+import flowLayout from '../../src/edge-positioning';
 // import { exampleBlastFurnaceWithDummy } from './examples';
 
 import { Graph } from 'graphlib';

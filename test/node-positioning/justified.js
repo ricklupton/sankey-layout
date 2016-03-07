@@ -1,4 +1,4 @@
-import justified from 'lib/node-positioning/justified';
+import justified from '../../src/node-positioning/justified';
 // import { exampleBlastFurnaceWithDummy } from './examples';
 
 import { Graph } from 'graphlib';

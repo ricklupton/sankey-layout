@@ -1,4 +1,4 @@
-import ordering from 'lib/node-ordering';
+import ordering from '../../src/node-ordering';
 import { exampleBlastFurnaceWithDummy } from './examples';
 
 import { Graph } from 'graphlib';

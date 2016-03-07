@@ -28,7 +28,16 @@ export function findSpanningTree(G, v0) {
   const visited = new Set();
   const tree = new Graph({directed: true});
   const thread = [];
+
+  if (!G.hasNode(v0)) throw Error('node not in graph');
+
   doDfs(G, v0, visited, tree, thread);
+  G.nodes().forEach(u => {
+    if (!visited.has(u)) {
+      console.log('missed visiting', u);
+      doDfs(G, u, visited, tree, thread);
+    }
+  });
 
   thread.forEach((u, i) => {
     tree.node(u).thread = (i + 1 < thread.length) ? thread[i + 1] : thread[0];
@@ -67,7 +76,9 @@ function doDfs(G, v, visited, tree, thread, depth=0) {
     thread.push(v);
     tree.setNode(v, { depth: depth });
 
-    const next = G.successors(v);
+    // It doesn't seem to cause a problem with letters as node ids, but numbers
+    // are sorted when using G.successors(). So use G.outEdges() instead.
+    const next = G.outEdges(v).map(e => e.w);
     next.forEach((w, i) => {
       if (!visited.has(w)) {
         tree.setEdge(v, w, { delta: 1 });

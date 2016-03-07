@@ -1,8 +1,9 @@
-import addDummyNodes from 'lib/add-dummy-nodes';
-import createGraph from 'lib/utils';
+import addDummyNodes from '../src/add-dummy-nodes';
+import createGraph from '../src/utils';
 
 import { Graph } from 'graphlib';
 import test from 'prova';
+import { assertSetEqual } from './assertions';
 
 
 test('addDummyNodes', t => {
@@ -54,12 +55,3 @@ test('addDummyNodes', t => {
 
   t.end();
 });
-
-
-function assertSetEqual(t, a, b, msg) {
-  const x = Array.from(a),
-        y = Array.from(b);
-  x.sort();
-  y.sort();
-  t.deepEqual(x, y, msg);
-}

@@ -1,7 +1,8 @@
-import groupedGraph from 'lib/rank-assignment/grouped-graph';
+import groupedGraph from '../../src/rank-assignment/grouped-graph';
 
 import { Graph } from 'graphlib';
 import test from 'prova';
+import { assertSetEqual } from '../assertions';
 
 
 // XXX reversing edges into Smin and out of Smax?
@@ -12,27 +13,65 @@ test('rank assignment: groupedGraph', t => {
 
   let G2 = groupedGraph(G, rankSets);
 
-  G2.nodes().sort();
-  t.deepEqual(G2.nodes(), ['__S0', '__S1', 'b', 'e', 'f'],
-              'nodes');
+  const nodes = sortedNodeItems(G2);
+  t.deepEqual(nodes, [
+    ['0', { type: 'min', nodes: ['a'] }],
+    ['1', { type: 'same', nodes: ['c', 'd'] }],
+    ['2', { type: 'same', nodes: ['b'] }],
+    ['3', { type: 'same', nodes: ['e'] }],
+    ['4', { type: 'same', nodes: ['f'] }],
+  ], 'nodes');
 
   t.deepEqual(G2.edges(), [
-    {v: '__S0', w: 'b'},
-    {v: '__S0', w: '__S1'},
-    {v: 'b', w: '__S1'},
-    {v: '__S1', w: 'e'},
-    {v: 'e', w: 'b'},
-    {v: 'f', w: '__S1'},
-    {v: '__S0', w: 'f'},
+    {v: '0', w: '2'},  // a-b
+    {v: '0', w: '1'},  // a-cd
+    {v: '2', w: '1'},  // b-cd
+    {v: '1', w: '3'},  // cd-e
+    {v: '3', w: '2'},  // e-b
+    {v: '4', w: '1'},  // f-cd
   ], 'edges');
   t.deepEqual(G2.edges().map(e => G2.edge(e)), [
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    { temp: true, delta: 0 },
+    { delta: 1 },
+    { delta: 1 },
+    { delta: 1 },
+    { delta: 1 },
+    { delta: 1 },
+    { delta: 1 },
+  ], 'edges labels');
+
+  t.end();
+});
+
+
+test('rank assignment: groupedGraph with reversed nodes', t => {
+  const G = new Graph({directed: true});
+
+  G.setEdge('a', 'b');
+  G.setEdge('a', 'c');
+  G.setEdge('c', 'd');
+  G.setNode('c', { reversed: true });
+  G.setNode('d', { reversed: true });
+
+  let G2 = groupedGraph(G, []);
+
+  const nodes = sortedNodeItems(G2);
+  t.deepEqual(nodes, [
+    ['0', { type: 'min', nodes: ['a'] }],
+    ['1', { type: 'same', nodes: ['b'] }],
+    ['2', { type: 'same', nodes: ['c'] }],
+    ['3', { type: 'same', nodes: ['d'] }],
+  ], 'nodes');
+
+  t.deepEqual(G2.edges(), [
+    {v: '0', w: '1'},
+    {v: '0', w: '2'},
+    {v: '3', w: '2'},    // REVERSED
+  ], 'edges');
+
+  t.deepEqual(G2.edges().map(e => G2.edge(e)), [
+    { delta: 1 },
+    { delta: 0 },
+    { delta: 1 },
   ], 'edges labels');
 
   t.end();
@@ -40,6 +79,11 @@ test('rank assignment: groupedGraph', t => {
 
 
 function exampleWithLoop() {
+  //
+  //  f -------,    b<-,
+  //  a -- b -- c -- e `
+  //    `------ d -'
+  //
   const G = new Graph({directed: true});
 
   G.setEdge('a', 'b');
@@ -55,4 +99,11 @@ function exampleWithLoop() {
   ];
 
   return { G, rankSets };
+}
+
+
+function sortedNodeItems(G) {
+  const nodes = G.nodes().map(u => [u, G.node(u)]);
+  nodes.sort(([a], [b]) => a < b ? -1 : b > a ? 1 : 0);
+  return nodes;
 }

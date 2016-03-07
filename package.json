@@ -18,10 +18,16 @@
     "prova": "~2.1.2",
     "almost-equal": "~1.0.0",
     "defined": "~1.0.0",
-    "tape": "~4.5.0"
+    "tape": "~4.5.0",
+    "nyc": "~6.0.0",
+    "babel-register": "~6.6.5"
   },
   "scripts": {
+    "prepublish": "npm run build",
+    "build": "babel src -d lib",
     "test": "prova 'test/**/*.js' -t babelify -b",
+    "test-node": "babel-tape-runner 'test/**/*.js'",
+    "coverage": "nyc --reporter=lcov npm run test-node",
     "jsdoc": "jsdoc --package package.json -r lib/ -d docs"
   },
   "author": "Rick Lupton",

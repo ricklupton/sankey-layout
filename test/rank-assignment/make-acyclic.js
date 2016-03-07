@@ -1,4 +1,4 @@
-import makeAcyclic from 'lib/rank-assignment/make-acyclic';
+import makeAcyclic from '../../src/rank-assignment/make-acyclic';
 
 import { Graph, alg } from 'graphlib';
 import test from 'prova';
@@ -30,19 +30,13 @@ test('rank assignment: makeAcyclic', t => {
 });
 
 
-// test('assignInitialRanks', t => {
-//   let { G, rankSets } = exampleWithLoop();
-//   assignInitialRanks(G);
-
-//   t.deepEqual(ranks.map(d => d.length),
-//               order.map(d => d.length),
-//               'order is same length as original list of ranks');
-
-//   t.end();
-// });
-
-
 function exampleWithLoop() {
+  //
+  // ,--<----------,
+  // \       ,- d -`
+  //  a -- b -- c
+  //    `-----'
+  //
   const G = new Graph({directed: true});
   G.setEdge('a', 'b', {});
   G.setEdge('b', 'c', {});

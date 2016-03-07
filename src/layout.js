@@ -6,9 +6,9 @@
 
 import d3 from 'd3';
 
-import { createGraph } from 'lib/utils';
-import assignRanks from 'lib/rank-assignment';
-import addDummyNodes from 'lib/add-dummy-nodes';
+import { createGraph } from './utils';
+import assignRanks from './rank-assignment';
+import addDummyNodes from './add-dummy-nodes';
 import ordering from './node-ordering';
 import justified from './node-positioning/justified';
 import orderEdges from './edge-ordering';

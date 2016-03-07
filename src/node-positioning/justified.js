@@ -23,6 +23,7 @@ export default function justifiedPositioning() {
     if (scale === null) position.scaleToFit(G, order);
 
     // set node and edge sizes
+    setNodeValues(G, edgeValue, nodeDirection);
     setNodeEdgeHeights(G, edgeValue, scale);
 
     // position nodes in each layer
