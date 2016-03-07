@@ -15,11 +15,11 @@ import sankeyLayout from '../src/layout';
 test('combined layout', t => {
   // XXX TODO start from rank assignment
 
-  const {nodes, edges} = exampleBlastFurnace();
+  const {processes, flows} = exampleBlastFurnace();
 
   //////// Steps ///////
 
-  const G1 = createGraph(nodes, edges);
+  const G1 = createGraph(processes, flows);
   assignRanks(G1, []);
   addDummyNodes(G1);
   const order = ordering(G1);
@@ -38,8 +38,10 @@ test('combined layout', t => {
 
   const layout = sankeyLayout()
           .size([10, 8]);
+  layout(flows, processes);
 
-  const { nodes: n2, flows: f2 } = layout(nodes, edges);
+  const n2 = layout.nodes(),
+        f2 = layout.links();
 
   ///////// Compare ////////
 
@@ -53,10 +55,10 @@ test('combined layout', t => {
 
 function exampleBlastFurnace() {
   // Simplified example of flows through coke oven and blast furnace
-  const nodes = [
+  const processes = [
   ];
 
-  const edges = [
+  const flows = [
     // main flow
     {source: 'input', target: 'oven', value: 2.5},
     {source: 'oven', target: 'coke', value: 2.5},
@@ -76,5 +78,5 @@ function exampleBlastFurnace() {
     {source: 'bf', target: 'input', value: 0.5},
   ];
 
-  return {nodes, edges};
+  return {processes, flows};
 }
