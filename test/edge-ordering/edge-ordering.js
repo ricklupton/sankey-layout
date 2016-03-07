@@ -76,6 +76,31 @@ test('edgeOrdering: starting and ending in same slice', t => {
 });
 
 
+test('edgeOrdering: materials are sorted', t => {
+  // order of edges doesn't affect order of flows
+  const G1 = exampleMaterials(['m1', 'm2']),
+        G2 = exampleMaterials(['m2', 'm1']);
+  orderEdges(G1);
+  orderEdges(G2);
+
+  t.deepEqual(G1.node('0').outgoing, G1.node('1').incoming, 'flows not twisted');
+
+  t.deepEqual(G1.node('0').outgoing, G2.node('0').outgoing, 'outgoing order unchanged');
+  t.deepEqual(G1.node('1').incoming, G2.node('1').incoming, 'incoming order unchanged');
+
+  const G3 = exampleMaterials([0, 1]),
+        G4 = exampleMaterials([1, 0]);
+  orderEdges(G3);
+  orderEdges(G4);
+
+  t.deepEqual(G3.node('0').outgoing, G4.node('0').outgoing, 'outgoing order unchanged');
+  t.deepEqual(G3.node('1').incoming, G4.node('1').incoming, 'incoming order unchanged');
+
+  console.log(G3.node('0'));
+  t.end();
+});
+
+
 function example4to1() {
   let G = new Graph({ directed: true });
 
@@ -130,4 +155,21 @@ function exampleLoops() {
   });
 
   return {G};
+}
+
+
+function exampleMaterials(materials) {
+  let G = new Graph({ directed: true, multigraph: true });
+
+  //
+  //  0 -- 1
+  //
+
+  G.setNode('0', {x: 0, y: 0});
+  G.setNode('1', {x: 1, y: 0});
+  for (let m of materials) {
+    G.setEdge('0', '1', {value: 2}, m);
+  }
+
+  return G;
 }

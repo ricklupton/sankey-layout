@@ -1,10 +1,5 @@
 /** @module edge-ordering */
 
-// import initialOrdering from './initial-ordering';
-// import swapNodes from './swap-nodes';
-// import countCrossings from './count-crossings';
-// import sortNodes from './weighted-median';
-
 
 /**
  * Order the edges in the graph G, with node positions already set.

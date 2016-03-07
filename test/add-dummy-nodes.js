@@ -97,3 +97,25 @@ test('addDummyNodes: reversed nodes', t => {
 
   t.end();
 });
+
+
+test('addDummyNodes: multigraph', t => {
+
+  const G1 = new Graph({directed: true, multigraph: true});
+  G1.setEdge('a', 'b', {data: {}}, 'm1');
+  G1.setEdge('a', 'b', {data: {}}, 'm2');
+  G1.setNode('a', { rank: 0 });
+  G1.setNode('b', { rank: 2 });
+  addDummyNodes(G1);
+
+  assertSetEqual(t, G1.nodes(), ['a', 'b', '__a_b_1'],
+                 'only one dummy node for all materials');
+  assertSetEqual(t, G1.edges(), [
+    {v: 'a', w: '__a_b_1', name: 'm1'},
+    {v: '__a_b_1', w: 'b', name: 'm1'},
+    {v: 'a', w: '__a_b_1', name: 'm2'},
+    {v: '__a_b_1', w: 'b', name: 'm2'},
+  ], 'G1 edges');
+
+  t.end();
+});

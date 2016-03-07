@@ -9,9 +9,10 @@ import { assertAlmostEqual, assertNotAlmostEqual } from '../assert-almost-equal'
 test('flowLayout: flow endpoints', t => {
   const {G} = example2to1(0);
   const layout = flowLayout();
-  layout(G);
+  const flows = layout(G);
 
-  const flows = G.edges().map(e => G.edge(e));
+  // ids
+  t.deepEqual(flows.map(f => f.id), ['0-2-m1', '1-2-m2'], 'f.id');
 
   // x coordinates
   t.deepEqual(flows.map(f => f.x0), [0, 0], 'f.x0');
@@ -94,7 +95,7 @@ test('flowLayout: maximum curvature limit', t => {
 
 
 function example2to1(f) {
-  let G = new Graph({ directed: true });
+  let G = new Graph({ directed: true, multigraph: true });
 
   // 0|---\
   //       \
@@ -109,15 +110,15 @@ function example2to1(f) {
         y1 = 1 + (1-f)*2,
         y2 = 2;
 
-  G.setNode('0', {x: 0, y: y0, dy: 1, incoming: [], outgoing: [{v: '0', w: '2'}]});
-  G.setNode('1', {x: 0, y: y1, dy: 1, incoming: [], outgoing: [{v: '1', w: '2'}]});
-  G.setNode('2', {x: 3, y: y2, dy: 2, incoming: [
-    {v: '0', w: '2'},
-    {v: '1', w: '2'},
-  ], outgoing: []});
+  const e02 = {v: '0', w: '2', name: 'm1'},
+        e12 = {v: '1', w: '2', name: 'm2'};
 
-  G.setEdge('0', '2', {dy: 1});
-  G.setEdge('1', '2', {dy: 1});
+  G.setNode('0', {x: 0, y: y0, dy: 1, incoming: [], outgoing: [e02]});
+  G.setNode('1', {x: 0, y: y1, dy: 1, incoming: [], outgoing: [e12]});
+  G.setNode('2', {x: 3, y: y2, dy: 2, incoming: [e02, e12], outgoing: []});
+
+  G.setEdge('0', '2', {dy: 1}, 'm1');
+  G.setEdge('1', '2', {dy: 1}, 'm2');
 
   return {G};
 }

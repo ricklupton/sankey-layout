@@ -16,7 +16,7 @@ export default function flowLayout() {
     const edges = [];
     G.edges().forEach(e => {
       const edge = G.edge(e);
-      edge.id = `${e.v}-${e.w}`;
+      edge.id = `${e.v}-${e.w}-${e.name}`;
       edges.push(edge);
     });
 

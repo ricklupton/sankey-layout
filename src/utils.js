@@ -2,10 +2,10 @@ import { Graph } from 'graphlib';
 
 
 export function createGraph(nodes, edges) {
-  const G = new Graph({directed: true});
+  const G = new Graph({directed: true, multigraph: true});
 
   edges.forEach(edge => {
-    G.setEdge(edge.source, edge.target, { data: edge });
+    G.setEdge(edge.source, edge.target, { data: edge }, edge.material);
   });
 
   G.nodes().forEach(u => G.setNode(u, { data: {} }));

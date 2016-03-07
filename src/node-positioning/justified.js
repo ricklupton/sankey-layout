@@ -124,7 +124,8 @@ function setNodeValues(G, edgeValue, nodeDirection) {
     node.value = Math.max(incoming, outgoing);
 
     // also set direction
-    if (node.direction === undefined) node.direction = nodeDirection(node) || 'r';
+    // if (node.direction === undefined) node.direction = nodeDirection(node) || 'r';
+    // XXX this is done when creating graph in the first place?
   });
 }
 

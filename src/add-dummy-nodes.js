@@ -41,7 +41,7 @@ function replaceEdge(G, oldEdge, dummyRanks, direction) {
   const nn = [oldEdge.v, ...dummies, oldEdge.w];
   nn.forEach((n, i) => {
     if (i + 1 < nn.length)
-      G.setEdge(nn[i], nn[i + 1], { data: G.edge(oldEdge).data });
+      G.setEdge(nn[i], nn[i + 1], { data: G.edge(oldEdge).data }, oldEdge.name);
   });
 
   G.removeEdge(oldEdge);
