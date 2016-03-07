@@ -20,13 +20,14 @@
     "defined": "~1.0.0",
     "tape": "~4.5.0",
     "nyc": "~6.0.0",
-    "babel-register": "~6.6.5"
+    "babel-register": "~6.6.5",
+    "babel-tape-runner": "~2.0.1"
   },
   "scripts": {
     "prepublish": "npm run build",
     "build": "babel src -d lib",
-    "test": "prova 'test/**/*.js' -t babelify -b",
-    "test-node": "babel-tape-runner 'test/**/*.js'",
+    "test-browser": "prova 'test/**/*.js' -t babelify -b",
+    "test": "babel-tape-runner 'test/**/*.js'",
     "coverage": "nyc --reporter=lcov npm run test-node",
     "jsdoc": "jsdoc --package package.json -r lib/ -d docs"
   },
