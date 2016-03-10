@@ -5,7 +5,7 @@ import { Graph } from 'graphlib';
 import test from 'prova';
 
 
-test('iterateSwappingNodes', t => {
+test('ordering', t => {
   let {G} = exampleBlastFurnaceWithDummy();
   let order = ordering(G);
 

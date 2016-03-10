@@ -49,7 +49,7 @@ export function neighbourPositions(G, order, i, j, u) {
 
   // neighbouring positions on other rank
   otherRank.forEach((n, i) => {
-    if (G.hasEdge(n, u) || G.hasEdge(u, n)) {
+    if (G.nodeEdges(n, u).length > 0) {
       positions.push(i);
     }
   });

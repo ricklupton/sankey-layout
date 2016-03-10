@@ -1,5 +1,7 @@
 import sortNodes, { medianValue, neighbourPositions } from '../../src/node-ordering/weighted-median';
-import { exampleTwoLevel, exampleTwoLevelWithLoops } from './examples';
+import { exampleTwoLevel,
+         exampleTwoLevelMultigraph,
+         exampleTwoLevelWithLoops } from './examples';
 
 import { Graph } from 'graphlib';
 import test from 'prova';
@@ -34,6 +36,18 @@ test('neighbourPositions', t => {
   t.end();
 });
 
+
+test('neighbourPositions: multigraph', t => {
+  let {G, order} = exampleTwoLevelMultigraph();
+
+  t.deepEqual(neighbourPositions(G, order, 0, 1, 'a'), [0, 2], 'a');
+  t.deepEqual(neighbourPositions(G, order, 0, 1, 'b'), [1, 2], 'b');
+
+  t.deepEqual(neighbourPositions(G, order, 1, 0, '1'), [0], '1');
+  t.deepEqual(neighbourPositions(G, order, 1, 0, '3'), [0, 1], '3');
+
+  t.end();
+});
 
 // test('neighbourPositions with loops', t => {
 //   let {G, order} = exampleTwoLevelWithLoops();
