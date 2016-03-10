@@ -1,3 +1,5 @@
+import max from 'lodash.max';
+
 import groupedGraph from './grouped-graph';
 import makeAcyclic from './make-acyclic';
 import assignInitialRanks from './initial-rank';
@@ -20,6 +22,7 @@ export default function assignRanks(G, rankSets) {
   assignInitialRanks(GG);
 
   // XXX improve initial ranking...
+  moveSourcesRight(GG);
 
   // Apply calculated ranks to original graph
   G.nodes().forEach(u => {
@@ -50,4 +53,18 @@ function addTemporaryEdges(GG) {
   //     GG.
   //   }
   // });
+}
+
+
+function moveSourcesRight(GG) {
+  GG.edges().forEach(e => {
+    const edge = GG.edge(e);
+    if (edge.temp) moveRight(e.w);
+  });
+
+  function moveRight(v) {
+    const V = GG.node(v);
+    const rank = max(GG.outEdges(v).map(e => GG.node(e.w).rank - GG.edge(e).delta));
+    if (rank !== undefined) V.rank = rank;
+  }
 }

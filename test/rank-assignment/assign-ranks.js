@@ -16,7 +16,7 @@ test('rank assignment: overall', t => {
     ['c', 2],
     ['d', 1],
     ['e', 3],
-    ['f', 0],
+    ['f', 1],  // sources are moved as far right as possible
     ['g', 1],
     ['h', 0],
   ], 'node ranks without rankSets');
@@ -29,9 +29,9 @@ test('rank assignment: overall', t => {
     ['c', 2],
     ['d', 2],
     ['e', 3],
-    ['f', 0],
+    ['f', 1],
     ['g', 2],
-    ['h', 0],  // this is the initial ranking -- haven't shorted g-h
+    ['h', 1],
   ], 'node ranks with rankSets');
 
   // Edges are still in original orientation
