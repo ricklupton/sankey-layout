@@ -5,6 +5,9 @@ export default function addDummyNodes(G) {
     const V = G.node(e.v), W = G.node(e.w);
     let r = V.rank, id, dummyRanks = [];
 
+    G.edge(e).source = V;
+    G.edge(e).target = W;
+
     if (r + 1 < W.rank) {
       // add more to get forwards
       while (++r < W.rank) {
@@ -41,7 +44,11 @@ function replaceEdge(G, oldEdge, dummyRanks, direction) {
   const nn = [oldEdge.v, ...dummies, oldEdge.w];
   nn.forEach((n, i) => {
     if (i + 1 < nn.length)
-      G.setEdge(nn[i], nn[i + 1], { data: G.edge(oldEdge).data }, oldEdge.name);
+      G.setEdge(nn[i], nn[i + 1], {
+        source: G.node(oldEdge.v),
+        target: G.node(oldEdge.w),
+        data: G.edge(oldEdge).data
+      }, oldEdge.name);
   });
 
   G.removeEdge(oldEdge);

@@ -47,11 +47,11 @@ test('addDummyNodes', t => {
   t.deepEqual(G.node('c'), { rank: 2, data: { title: 'CC' } }, 'node label c');
 
   t.deepEqual(G.edge('a', 'b'),
-              { data: {} },
-              'edge label a-b');
+              { source: G.node('a'), target: G.node('b'), data: {} },
+              'sets source and target on short edges');
   t.deepEqual(G.edge('a', '__a_d_1'),
-              { data: { extra: 42 } },
-              'edge label a-d');
+              { source: G.node('a'), target: G.node('d'), data: { extra: 42 } },
+              'sets source and target on inner (dummy) edges to original node');
 
   t.end();
 });
