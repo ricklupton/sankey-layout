@@ -6,7 +6,7 @@ import test from 'prova';
 
 import { assertAlmostEqual, assertNotAlmostEqual } from '../assert-almost-equal';
 
-test('flowLayout: flow endpoints', t => {
+test('flowLayout: flow attributes', t => {
   const {G} = example2to1(0);
   const layout = flowLayout();
   const flows = layout(G);
@@ -23,7 +23,7 @@ test('flowLayout: flow endpoints', t => {
 
   // x coordinates
   t.deepEqual(flows.map(f => f.x0), [0, 0], 'f.x0');
-  t.deepEqual(flows.map(f => f.x1), [3, 3], 'f.x1');
+  t.deepEqual(flows.map(f => f.x1), [2, 2], 'f.x1');
 
   // y coordinates
   t.deepEqual(flows.map(f => f.y0), [0.5, 3.5], 'f.y0');
@@ -40,30 +40,23 @@ test('flowLayout: flow endpoints', t => {
 test('flowLayout: loose edges', t => {
   const {G} = example2to1(0);
   const layout = flowLayout();
-  layout(G);
-
-  const flows = G.edges().map(e => G.edge(e));
-
-  // XXX initially symmetric curvature
-  assertAlmostEqual(t, flows.map(f => f.r0), flows.map(f => f.r1),
-                    'radius equal at both ends');
+  const flows = layout(G);
 
   // should not overlap
+  console.log(flows);
   t.ok((flows[0].r1 + flows[0].dy/2) <= (flows[1].r1 - flows[1].dy/2),
-       'flow curvature should not overlap');
+       'flows should not overlap');
 
   t.end();
 });
 
 
 test('flowLayout: tight curvature', t => {
-  // setting f= 0.5 moves up the lower flow to constrain the curvature at node
+  // setting f= 0.3 moves up the lower flow to constrain the curvature at node
   // 2.
-  const {G} = example2to1(0.5);
+  const {G} = example2to1(0.3);
   const layout = flowLayout();
-  layout(G);
-
-  const flows = G.edges().map(e => G.edge(e));
+  const flows = layout(G);
 
   // curvature should no longer be symmetric
   assertNotAlmostEqual(t, flows.map(f => f.r0), flows.map(f => f.r1), 1e-6,
@@ -82,17 +75,11 @@ test('flowLayout: maximum curvature limit', t => {
   // 2.
   const {G} = example2to1(1.0);
   const layout = flowLayout();
-  layout(G);
-
-  const flows = G.edges().map(e => G.edge(e));
+  const flows = layout(G);
 
   // curvature should no longer be symmetric
   assertNotAlmostEqual(t, flows.map(f => f.r0), flows.map(f => f.r1), 1e-6,
                        'radius should not be equal at both ends');
-
-  // should not overlap
-  assertAlmostEqual(t, (flows[0].r1 + flows[0].dy/2), (flows[1].r1 - flows[1].dy/2), 1e-6,
-                    'flow curvatures should just touch');
 
   assertAlmostEqual(t, (flows[0].r1 - flows[0].dy/2), 0, 1e-6,
                     'inner flow curvature should be zero');
@@ -122,7 +109,7 @@ function example2to1(f) {
 
   G.setNode('0', {x: 0, y: y0, dy: 1, incoming: [], outgoing: [e02]});
   G.setNode('1', {x: 0, y: y1, dy: 1, incoming: [], outgoing: [e12]});
-  G.setNode('2', {x: 3, y: y2, dy: 2, incoming: [e02, e12], outgoing: []});
+  G.setNode('2', {x: 2, y: y2, dy: 2, incoming: [e02, e12], outgoing: []});
 
   G.setEdge('0', '2', {dy: 1}, 'm1');
   G.setEdge('1', '2', {dy: 1}, 'm2');
