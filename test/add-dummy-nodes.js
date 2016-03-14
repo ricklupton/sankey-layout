@@ -82,7 +82,7 @@ test('addDummyNodes: reversed nodes', t => {
     {v: '__a_b_1', w: 'b'},
   ], 'G2 edges');
 
-  // right to left
+  // left to right
   const G3 = new Graph({directed: true});
   G3.setEdge('a', 'b', {data: {}});
   G3.setNode('a', { rank: 1, direction: 'l' });
@@ -95,6 +95,18 @@ test('addDummyNodes: reversed nodes', t => {
     {v: '__a_b_0', w: 'b'},
   ], 'G3 edges');
 
+  // left to right, b ranked higher
+  const G4 = new Graph({directed: true});
+  G4.setEdge('a', 'b', {data: {}});
+  G4.setNode('a', { rank: 0, direction: 'l' });
+  G4.setNode('b', { rank: 1, direction: 'r' });
+  addDummyNodes(G4);
+
+  assertSetEqual(t, G4.nodes(), ['a', 'b', '__a_b_0'], 'G4 nodes');
+  assertSetEqual(t, G4.edges(), [
+    {v: 'a', w: '__a_b_0'},
+    {v: '__a_b_0', w: 'b'},
+  ], 'G4 edges');
   t.end();
 });
 

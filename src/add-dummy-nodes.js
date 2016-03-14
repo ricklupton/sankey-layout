@@ -8,11 +8,15 @@ export default function addDummyNodes(G) {
     G.edge(e).source = V;
     G.edge(e).target = W;
 
-    if (r + 1 < W.rank) {
+    if (r + 1 <= W.rank) {
       // add more to get forwards
+      if (V.direction === 'l')
+        dummyRanks.push(r);  // turn around
       while (++r < W.rank) {
         dummyRanks.push(r);
       }
+      if (W.direction === 'l')
+        dummyRanks.push(r);  // turn around
       replaceEdge(G, e, dummyRanks, 'r');
 
     } else if (r > W.rank) {
