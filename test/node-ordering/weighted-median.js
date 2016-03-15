@@ -1,4 +1,4 @@
-import sortNodes, { medianValue, neighbourPositions } from '../../src/node-ordering/weighted-median';
+import sortNodes, { medianValue, neighbourPositions, sortByPositions } from '../../src/node-ordering/weighted-median';
 import { exampleTwoLevel,
          exampleTwoLevelMultigraph,
          exampleTwoLevelWithLoops } from './examples';
@@ -49,6 +49,37 @@ test('neighbourPositions: multigraph', t => {
   t.end();
 });
 
+
+test('neighbourPositions: loops', t => {
+  //
+  //   a --,1
+  //      <
+  //       `2
+  //
+  //   b -- 3
+  //
+  let G = new Graph({ directed: true });
+  G.setEdge('a', '1', {});
+  G.setEdge('b', '3', {});
+  G.setEdge('2', '1', {});
+
+  let order = [
+    ['a', 'b'],
+    ['1', '2', '3'],
+  ];
+
+  t.deepEqual(neighbourPositions(G, order, 0, 1, 'a', true), [0], 'a');
+  t.deepEqual(neighbourPositions(G, order, 0, 1, 'b', true), [2], 'b');
+
+  // loop gets 0.5 position below other node in this rank, if no other
+  // neighbours.
+  t.deepEqual(neighbourPositions(G, order, 1, 0, '1', true), [0], '1');
+  t.deepEqual(neighbourPositions(G, order, 1, 0, '2', true), [0.5], '2');
+  t.deepEqual(neighbourPositions(G, order, 1, 0, '3', true), [1], '3');
+
+  t.end();
+});
+
 // test('neighbourPositions with loops', t => {
 //   let {G, order} = exampleTwoLevelWithLoops();
 
@@ -83,3 +114,24 @@ test('sortNodes', t => {
   t.end();
 });
 
+
+test('sortByPositions', t => {
+  let arr;
+
+  arr = ['a', 'b', 'c'];
+  sortByPositions(arr, new Map([['a', 0], ['b', 2], ['c', 1]]));
+  t.deepEqual(arr, ['a', 'c', 'b'],
+              'sorts according to given order');
+
+  arr = ['a', 'b', 'c'];
+  sortByPositions(arr, new Map([['a', 2], ['b', 1], ['c', 1]]));
+  t.deepEqual(arr, ['b', 'c', 'a'],
+              'stable sort');
+
+  arr = ['a', 'b', 'c'];
+  sortByPositions(arr, new Map([['a', 1], ['b', -1], ['c', 0]]));
+  t.deepEqual(arr, ['c', 'b', 'a'],
+              '-1 means stay in same position');
+
+  t.end();
+});
