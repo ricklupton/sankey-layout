@@ -1,4 +1,4 @@
-import max from 'lodash.max';
+import min from 'lodash.min';
 
 import groupedGraph from './grouped-graph';
 import makeAcyclic from './make-acyclic';
@@ -9,6 +9,8 @@ import assignInitialRanks from './initial-rank';
  * Assign ranks to the nodes in G, according to rankSets.
  */
 export default function assignRanks(G, rankSets) {
+  if (G.nodes().length === 0) return;
+
   // Group nodes together, and add additional edges from Smin to sources
   const GG = groupedGraph(G, rankSets);
 
@@ -64,7 +66,7 @@ function moveSourcesRight(GG) {
 
   function moveRight(v) {
     const V = GG.node(v);
-    const rank = max(GG.outEdges(v).map(e => GG.node(e.w).rank - GG.edge(e).delta));
+    const rank = min(GG.outEdges(v).map(e => GG.node(e.w).rank - GG.edge(e).delta));
     if (rank !== undefined) V.rank = rank;
   }
 }
