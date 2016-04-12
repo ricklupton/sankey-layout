@@ -13,7 +13,6 @@ export default function swapNodes(G, order) {
 
         if (count1 < count0) {
           improved = true;
-          console.log('improved', count0, count1, j, j + 1);
         } else {
           transpose(order[i], j, j + 1);  // put back
         }

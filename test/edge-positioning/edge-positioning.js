@@ -14,13 +14,6 @@ test('flowLayout: flow attributes', t => {
   // ids
   t.deepEqual(flows.map(f => f.id), ['0-2-m1', '1-2-m2'], 'f.id');
 
-  // source and node objects
-  // XXX set by addDummyNodes
-  // t.equal(flows[0].source, G.node('0'), 'flow 0-2 source');
-  // t.equal(flows[0].target, G.node('2'), 'flow 0-2 target');
-  // t.equal(flows[1].source, G.node('1'), 'flow 1-2 source');
-  // t.equal(flows[1].target, G.node('2'), 'flow 1-2 target');
-
   // x coordinates
   t.deepEqual(flows.map(f => f.x0), [0, 0], 'f.x0');
   t.deepEqual(flows.map(f => f.x1), [2, 2], 'f.x1');

@@ -11,8 +11,8 @@
  */
 export default function countCrossings(G, orderA, orderB) {
   return (
-    countBetweenCrossings(G, orderA, orderB) +
-    countLoopCrossings(G, orderA, orderB)
+    countBetweenCrossings(G, orderA, orderB) //+
+    // countLoopCrossings(G, orderA, orderB)
   );
 }
 
