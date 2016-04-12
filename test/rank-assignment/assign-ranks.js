@@ -51,6 +51,32 @@ test('rank assignment: overall', t => {
 });
 
 
+test('rank assignment: disconnected', t => {
+  let { G, rankSets } = exampleDisconnected();
+
+  // Without rankSets
+  assignRanks(G, []);
+  const rank1 = G.nodes().map(u => [u, G.node(u).rank]);
+  t.deepEqual(rank1, [
+    ['a', 0],
+    ['b', 1],
+    ['c', 0],
+    ['d', 1],
+  ], 'node ranks without rankSets');
+
+  assignRanks(G, rankSets);
+  const rank2 = G.nodes().map(u => [u, G.node(u).rank]);
+  t.deepEqual(rank2, [
+    ['a', 0],
+    ['b', 1],
+    ['c', 1],
+    ['d', 2],
+  ], 'node ranks with rankSets');
+
+  t.end();
+});
+
+
 function exampleWithLoop() {
   //
   //  f -------,    b<-,
@@ -76,6 +102,23 @@ function exampleWithLoop() {
 
   const rankSets = [
     { type: 'same', nodes: ['c', 'd'] },
+  ];
+
+  return { G, rankSets };
+}
+
+
+function exampleDisconnected() {
+  //
+  //   a -- b
+  //        c -- d
+  //
+  const G = new Graph({directed: true});
+  G.setEdge('a', 'b');
+  G.setEdge('c', 'd');
+
+  const rankSets = [
+    { type: 'same', nodes: ['b', 'c'] },
   ];
 
   return { G, rankSets };
