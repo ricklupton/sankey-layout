@@ -52,6 +52,10 @@ export default function justifiedPositioning() {
             isLast = true;  // XXX bands
 
       let y = margin;
+      if (rank.length === 1) {
+        // centre vertically
+        y += (height - G.node(rank[0]).dy) / 2;
+      }
 
       let prevGap = isFirst ? Number.MAX_VALUE : 0;  // edge of graph
       rank.forEach((u, i) => {
