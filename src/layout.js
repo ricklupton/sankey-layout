@@ -31,15 +31,26 @@ export default function sankeyLayout() {
    * @param G {Graph} - The input graph. Nodes must have `rank` attributes.
    * Edges must have `value` attributes.
    */
-  function layout(flows=[], processes=[], rankSets=[]) {
+  function layout(flows=[], processes=[], rankSets=[], order=null) {
 
-    // Assign ranks
     const G = createGraph(processes, flows);
-    assignRanks(G, rankSets);
-    addDummyNodes(G);
 
-    // Assign orders within ranks
-    const order = ordering(G);
+    if (order == null) {
+      // Assign ranks
+      assignRanks(G, rankSets);
+      addDummyNodes(G);
+
+      // Assign orders within ranks
+      order = ordering(G);
+    } else {
+      // XXX tidy this up - current this is needed for sensible titles later,
+      // but source and title are set by addDummyNodes.
+      G.edges().forEach(e => {
+        const V = G.node(e.v), W = G.node(e.w);
+        G.edge(e).source = V;
+        G.edge(e).target = W;
+      });
+    }
 
     // Position and scale nodes within ranks
     nodes = nodeLayout(G, order);
