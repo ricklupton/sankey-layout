@@ -95,6 +95,18 @@ test('rank assignment: groupedGraph ignores multiple edges', t => {
 });
 
 
+test('rank assignment: groupedGraph sets delta = 0 on loops', t => {
+  // loops (with same source and target) should have zero rank difference
+  const G = new Graph({directed: true});
+  G.setEdge('a', 'a');
+  const GG = groupedGraph(G, []);
+
+  t.deepEqual(GG.edges(), [{v: '0', w: '0'}], 'edges');
+  t.deepEqual(GG.edge({v: '0', w: '0'}), { delta: 0}, 'edge has delta == 0');
+
+  t.end();
+});
+
 function exampleWithLoop() {
   //
   //  f -------,    b<-,

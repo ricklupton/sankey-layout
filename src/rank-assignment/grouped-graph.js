@@ -66,7 +66,10 @@ export default function groupedGraph(G, rankSets) {
           W = G.node(e.w) || {};
 
     const edge = GG.edge(source, target) || { delta: 0 };
-    if (V.direction === 'l') {
+    if (source === target) {
+      edge.delta = 0;
+      GG.setEdge(source, target, edge);
+    } else if (V.direction === 'l') {
       edge.delta = Math.max(edge.delta, W.direction === 'l' ? 1 : 0);
       GG.setEdge(target, source, edge);
     } else {

@@ -23,6 +23,24 @@ test('rank assignment: assignInitialRanks', t => {
 });
 
 
+test('rank assignment: assignInitialRanks with loop', t => {
+  // loops can easily happen with grouped nodes from rankSets
+  const G = new Graph({directed: true});
+  G.setEdge('a', 'b', { delta: 1 });
+  G.setEdge('b', 'c', { delta: 1 });
+  G.setEdge('b', 'b', { delta: 0 });
+  assignInitialRanks(G);
+
+  t.deepEqual(G.nodes().map(u => [u, G.node(u).rank]), [
+    ['a', 0],
+    ['b', 1],
+    ['c', 2],
+  ], 'node ranks');
+
+  t.end();
+});
+
+
 function exampleAcyclic() {
   const G = new Graph({directed: true});
 

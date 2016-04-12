@@ -11,6 +11,11 @@ export default function assignInitialRanks(G) {
         seen = new Set(),
         marked = new Set();
 
+  // Mark any loops, since they don't affect rank assignment
+  G.edges().forEach(e => {
+    if (e.v === e.w) marked.add(e);
+  });
+
   while (queue.length > 0) {
     const v = queue.shift();
     seen.add(v);
