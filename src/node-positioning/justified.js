@@ -9,11 +9,10 @@
 import max from 'lodash.max';
 import sumBy from 'lodash.sumby';
 import isFunction from 'lodash.isfunction';
+import isArray from 'lodash.isarray';
 
 
 export default function justifiedPositioning() {
-  // XXX what about bands?
-
   let size = [1, 1],
       scale = null,
       separation = function(a, b) { return 1; },
@@ -28,48 +27,63 @@ export default function justifiedPositioning() {
     setNodeValues(G, edgeValue, nodeDirection);
     setNodeEdgeHeights(G, edgeValue, scale);
 
+    const bandVals = bandValues(G, order);
+    console.log('bandVals', bandVals);
+
+    // input types:
+    // [ [r1b1n1, r1b1n2], [r2b1n1] ]
+    // [ [ [r1b1n1], [r1b2n1] ], ...
+    if (order.length > 0 && order[0].length > 0 && !isArray(order[0][0])) {
+      order = order.map(rank => [rank]);
+    }
+
     // position nodes in each layer
-    // XXX bands
-    const margin = whitespace * size[1] / 5;
     const dx = size[0] / (order.length - 1);
     let x = 0;
     order.forEach(rank => {
-      const height = size[1] - 2*margin;
-      const total = sumBy(rank, u => G.node(u).dy);
-      const gaps = rank.map((u, i) => {
-        const node = G.node(u);
-        if (!node.value) return 0;
-        return rank[i+1] ? separation(rank[i], rank[i+1], G) : 0;
+
+      let y = 0;
+      rank.forEach((band, j) => {
+        // Height of this band, based on fraction of value
+        const bandHeight = bandVals[j] / sumBy(bandVals) * size[1];
+
+        const margin = whitespace * bandHeight / 5;
+        const height = bandHeight - 2*margin;
+        const total = sumBy(band, u => G.node(u).dy);
+        const gaps = band.map((u, i) => {
+          const node = G.node(u);
+          if (!node.value) return 0;
+          return band[i+1] ? separation(band[i], band[i+1], G) : 0;
+        });
+        const space = Math.max(0, height - total);
+        const kg = sumBy(gaps) ? space / sumBy(gaps) : 0;
+
+        const isFirst = true,
+              isLast = true;  // XXX bands
+
+        let yy = y + margin;
+        if (band.length === 1) {
+          // centre vertically
+          yy += (height - G.node(band[0]).dy) / 2;
+        }
+
+        let prevGap = isFirst ? Number.MAX_VALUE : 0;  // edge of graph
+        band.forEach((u, i) => {
+          const node = G.node(u);
+          node.x = x;
+          node.y = yy;
+          node.spaceAbove = prevGap;
+          node.spaceBelow = gaps[i] * kg;
+          yy += node.dy + node.spaceBelow;
+          prevGap = node.spaceBelow;
+        });
+        if (band.length > 0) {
+          G.node(band[band.length - 1]).spaceBelow =
+            isLast ? Number.MAX_VALUE : 0;  // edge of graph
+        }
+
+        y += bandHeight;
       });
-      const space = Math.max(0, height - total);
-      const kg = sumBy(gaps) ? space / sumBy(gaps) : 0;
-
-      // if (rank.length === 1) {
-      //   y += space / 2;
-      // }
-
-      const isFirst = true,
-            isLast = true;  // XXX bands
-
-      let y = margin;
-      if (rank.length === 1) {
-        // centre vertically
-        y += (height - G.node(rank[0]).dy) / 2;
-      }
-
-      let prevGap = isFirst ? Number.MAX_VALUE : 0;  // edge of graph
-      rank.forEach((u, i) => {
-        const node = G.node(u);
-        node.x = x;
-        node.y = y;
-        node.spaceAbove = prevGap;
-        node.spaceBelow = gaps[i] * kg;
-        y += node.dy + node.spaceBelow;
-        prevGap = node.spaceBelow;
-      });
-      G.node(rank[rank.length - 1]).spaceBelow =
-        isLast ? Number.MAX_VALUE : 0;  // edge of graph
-
       x += dx;
     });
 
@@ -86,7 +100,7 @@ export default function justifiedPositioning() {
   position.scaleToFit = function(G, order) {
     setNodeValues(G, edgeValue, nodeDirection);
 
-    const maxValue = max(order.map(rank => sumBy(rank, u => G.node(u).value)));
+    const maxValue = sumBy(bandValues(G, order));
     if (maxValue <= 0) throw Error('no value');
 
     scale = size[1] / maxValue;
@@ -147,4 +161,25 @@ function setNodeEdgeHeights(G, edgeValue, scale) {
     edge.value = edgeValue(edge);
     edge.dy = edge.value * scale;
   });
+}
+
+
+function bandValues(G, order) {
+  if (order.length === 0 || order[0].length === 0) return [];
+  if (!isArray(order[0][0])) {
+    order = order.map(rank => [rank]);
+  }
+
+  const Nr = order.length,
+        Nb = order[0].length;
+
+  const values = new Array(Nb).fill(0);
+  order.forEach(rank => {
+    rank.forEach((band, j) => {
+      const total = sumBy(band, u => G.node(u).value);
+      values[j] = Math.max(values[j], total);
+    });
+  });
+
+  return values;
 }

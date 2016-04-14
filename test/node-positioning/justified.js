@@ -68,6 +68,43 @@ test('justifiedPositioning: nodes with zero value are ignored', t => {
 });
 
 
+test('justifiedPositioning: bands', t => {
+  const {G, order} = exampleBands();
+
+  const pos = justified().size([1, 8]);
+  pos(G, order);
+
+  // 50% whitespace: scale = 8 / 20 * 0.5 = 0.2
+  const scale = 8 / 30 * 0.5,
+        margin1 = ( 5/30) * 8 / 5,
+        margin2 = (25/30) * 8 / 5,
+        nodeHeights = (5 + 10 + 15) * scale;
+        // space = 8 - nodeHeights - 2 * margin,
+        // gap
+
+  const nodes = G.nodes().map(u => G.node(u));
+  console.log(nodes);
+  console.log(margin1, margin2);
+
+  // Bands should not overlap
+  const yb = margin1 + nodes[0].dy + margin1;
+  console.log(yb);
+  t.ok(nodes[0].y >= margin1, 'node 0 >= margin');
+  t.ok(nodes[2].y >= margin1, 'node 2 >= margin');
+  t.ok(nodes[0].y + nodes[0].dy < yb, 'node 0 above boundary');
+  t.ok(nodes[2].y + nodes[2].dy < yb, 'node 2 above boundary');
+
+  t.ok(nodes[1].y > yb, 'node 1 below boundary');
+  t.ok(nodes[3].y > yb, 'node 3 below boundary');
+  t.ok(nodes[4].y > yb, 'node 4 below boundary');
+  t.ok(nodes[1].y + nodes[1].dy <= 8, 'node 1 within height');
+  t.ok(nodes[3].y + nodes[3].dy <= 8, 'node 3 within height');
+  t.ok(nodes[4].y + nodes[4].dy <= 8, 'node 4 within height');
+
+  t.end();
+});
+
+
 function example4to1() {
   let G = new Graph({ directed: true });
 
@@ -89,6 +126,30 @@ function example4to1() {
   let order = [
     ['0', '1', '2', '3'],
     ['4'],
+  ];
+
+  return {G, order};
+}
+
+
+function exampleBands() {
+  let G = new Graph({ directed: true });
+
+  // 0 -- 2         : band x
+  //
+  //      1 -- 3    : band y
+  //        `- 4    :
+  //
+  G.setEdge('0', '2', {data: {value: 5}});
+  G.setEdge('1', '3', {data: {value: 10}});
+  G.setEdge('1', '4', {data: {value: 15}});
+
+  G.nodes().forEach(u => G.setNode(u, { data: {} }));
+
+  let order = [
+    [ ['0'], [] ],
+    [ ['2'], ['1'] ],
+    [ [   ], ['3', '4'] ],
   ];
 
   return {G, order};
