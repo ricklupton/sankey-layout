@@ -31,7 +31,8 @@ export default function sankeyLayout() {
    * @param G {Graph} - The input graph. Nodes must have `rank` attributes.
    * Edges must have `value` attributes.
    */
-  function layout(flows=[], processes=[], rankSets=[], order=null) {
+  function layout(flows=[], processes=[],
+                  {rankSets=[], order=null, alignMaterials=false} = {}) {
 
     const G = createGraph(processes, flows);
 
@@ -56,7 +57,7 @@ export default function sankeyLayout() {
     nodes = nodeLayout(G, order);
 
     // Order incoming and outgoing edges at each node
-    orderEdges(G);
+    orderEdges(G, {alignMaterials});
 
     // Position edges and calculate curvatures
     links = edgeLayout(G);
