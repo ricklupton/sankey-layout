@@ -105,6 +105,54 @@ test('justifiedPositioning: bands', t => {
 });
 
 
+test('justifiedPositioning: horizontal distribution', t => {
+  let G, order, nodes;
+
+  // no bends
+  G = new Graph({ directed: true });
+  G.setNode('0', { });
+  G.setNode('1', { });
+  G.setNode('2', { });
+  G.setEdge('0', '1', { data: { value: 3 } });
+  G.setEdge('1', '2', { data: { value: 3 } });
+  order = [
+    [ ['0'] ], [ ['1'] ], [ ['2'] ],
+  ];
+
+  justified().size([200, 200])(G, order);
+  nodes = G.nodes().map(u => G.node(u));
+  assertAlmostEqual(t, nodes.map(node => node.x), [0, 100, 200], 1e-3, 'node x, no bends');
+
+  // with bends
+  G = new Graph({ directed: true });
+  G.setEdge('0', '1', { data: { value: 6 } });
+  G.setEdge('1', '2', { data: { value: 3 } });
+  G.setEdge('1', '3', { data: { value: 3 } });
+  order = [
+    [ ['0'] ], [ ['1'] ], [ ['2', '3'] ],
+  ];
+
+  justified().size([20, 50])(G, order);
+  nodes = G.nodes().map(u => G.node(u));
+  assertAlmostEqual(t, nodes.map(node => node.x), [0, 4.27, 20, 20], 1e-2, 'node x with bends');
+
+  // with 2 bends & not enough space
+  G = new Graph({ directed: true });
+  G.setEdge('0', '2', { data: { value: 3 } });
+  G.setEdge('1', '2', { data: { value: 3 } });
+  G.setEdge('2', '3', { data: { value: 3 } });
+  G.setEdge('2', '4', { data: { value: 3 } });
+  order = [
+    [ ['0', '1'] ], [ ['2'] ], [ ['3', '4'] ],
+  ];
+
+  justified().size([20, 50])(G, order);
+  nodes = G.nodes().map(u => G.node(u));
+  assertAlmostEqual(t, nodes.map(node => node.x), [0, 0, 10, 20, 20], 1e-2, 'node x with 2 bends');
+  t.end();
+});
+
+
 function example4to1() {
   let G = new Graph({ directed: true });
 

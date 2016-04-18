@@ -10,6 +10,7 @@ import max from 'lodash.max';
 import sumBy from 'lodash.sumby';
 import isFunction from 'lodash.isfunction';
 import isArray from 'lodash.isarray';
+import { positionHorizontally, spanMinWidths } from './horizontal';
 
 
 export default function justifiedPositioning() {
@@ -28,7 +29,6 @@ export default function justifiedPositioning() {
     setNodeEdgeHeights(G, edgeValue, scale);
 
     const bandVals = bandValues(G, order);
-    console.log('bandVals', bandVals);
 
     // input types:
     // [ [r1b1n1, r1b1n2], [r2b1n1] ]
@@ -37,9 +37,6 @@ export default function justifiedPositioning() {
       order = order.map(rank => [rank]);
     }
 
-    // position nodes in each layer
-    const dx = size[0] / (order.length - 1);
-    let x = 0;
     order.forEach(rank => {
 
       let y = 0;
@@ -70,7 +67,6 @@ export default function justifiedPositioning() {
         let prevGap = isFirst ? Number.MAX_VALUE : 0;  // edge of graph
         band.forEach((u, i) => {
           const node = G.node(u);
-          node.x = x;
           node.y = yy;
           node.spaceAbove = prevGap;
           node.spaceBelow = gaps[i] * kg;
@@ -84,8 +80,11 @@ export default function justifiedPositioning() {
 
         y += bandHeight;
       });
-      x += dx;
     });
+
+    // position nodes horizontally
+    const minWidths = spanMinWidths(G, order);
+    positionHorizontally(G, order, size[0], minWidths);
 
     const nodes = [];
     G.nodes().forEach(u => {
