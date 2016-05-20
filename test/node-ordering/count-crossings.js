@@ -2,7 +2,7 @@ import countCrossings, { countBetweenCrossings, countLoopCrossings } from '../..
 import { exampleTwoLevel, exampleTwoLevelWithLoops } from './examples';
 
 import { Graph } from 'graphlib';
-import test from 'prova';
+import test from 'tape';
 
 
 test('countBetweenCrossings', t => {

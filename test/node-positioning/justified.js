@@ -2,7 +2,7 @@ import justified from '../../src/node-positioning/justified';
 // import { exampleBlastFurnaceWithDummy } from './examples';
 
 import { Graph } from 'graphlib';
-import test from 'prova';
+import test from 'tape';
 
 import { assertAlmostEqual } from '../assert-almost-equal';
 

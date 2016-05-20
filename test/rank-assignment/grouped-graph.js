@@ -1,7 +1,7 @@
 import groupedGraph from '../../src/rank-assignment/grouped-graph';
 
 import { Graph } from 'graphlib';
-import test from 'prova';
+import test from 'tape';
 import { assertSetEqual } from '../assertions';
 
 

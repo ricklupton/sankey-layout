@@ -2,7 +2,7 @@ import swapNodes from '../../src/node-ordering/swap-nodes';
 import { exampleTwoLevel } from './examples';
 
 import { Graph } from 'graphlib';
-import test from 'prova';
+import test from 'tape';
 
 
 test('iterateSwappingNodes', t => {

@@ -1,7 +1,7 @@
 import makeAcyclic from '../../src/rank-assignment/make-acyclic';
 
 import { Graph, alg } from 'graphlib';
-import test from 'prova';
+import test from 'tape';
 
 
 test('rank assignment: makeAcyclic', t => {

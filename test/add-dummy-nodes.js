@@ -2,7 +2,7 @@ import addDummyNodes from '../src/add-dummy-nodes';
 import createGraph from '../src/utils';
 
 import { Graph } from 'graphlib';
-import test from 'prova';
+import test from 'tape';
 import { assertSetEqual } from './assertions';
 
 

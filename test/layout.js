@@ -1,5 +1,5 @@
 import { Graph } from 'graphlib';
-import test from 'prova';
+import test from 'tape';
 
 import { createGraph } from '../src/utils';
 import assignRanks from '../src/rank-assignment';

@@ -1,6 +1,6 @@
 import { createGraph } from '../src/utils';
 
-import test from 'prova';
+import test from 'tape';
 
 
 test('createGraph', t => {

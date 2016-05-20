@@ -1,7 +1,7 @@
 import assignInitialRanks from '../../src/rank-assignment/initial-rank';
 
 import { Graph } from 'graphlib';
-import test from 'prova';
+import test from 'tape';
 
 
 test('rank assignment: assignInitialRanks', t => {

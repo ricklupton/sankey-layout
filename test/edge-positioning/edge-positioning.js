@@ -2,7 +2,7 @@ import flowLayout from '../../src/edge-positioning';
 // import { exampleBlastFurnaceWithDummy } from './examples';
 
 import { Graph } from 'graphlib';
-import test from 'prova';
+import test from 'tape';
 
 import { assertAlmostEqual, assertNotAlmostEqual } from '../assert-almost-equal';
 

@@ -1,7 +1,7 @@
 import assignRanks from '../../src/rank-assignment';
 
 import { Graph } from 'graphlib';
-import test from 'prova';
+import test from 'tape';
 
 
 test('rank assignment: overall', t => {

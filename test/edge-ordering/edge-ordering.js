@@ -1,7 +1,7 @@
 import orderEdges from '../../src/edge-ordering';
 
 import { Graph } from 'graphlib';
-import test from 'prova';
+import test from 'tape';
 
 import assertAlmostEqual from '../assert-almost-equal';
 

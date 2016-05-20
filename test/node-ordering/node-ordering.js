@@ -2,7 +2,7 @@ import ordering from '../../src/node-ordering';
 import { exampleBlastFurnaceWithDummy } from './examples';
 
 import { Graph } from 'graphlib';
-import test from 'prova';
+import test from 'tape';
 
 
 // Not sure why this test has changed

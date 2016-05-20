@@ -1,7 +1,7 @@
 import { findFirst, sweepCurvatureInwards } from '../../src/edge-positioning/utils';
 
 import { Graph } from 'graphlib';
-import test from 'prova';
+import test from 'tape';
 
 import { assertAlmostEqual, assertNotAlmostEqual } from '../assert-almost-equal';
 
