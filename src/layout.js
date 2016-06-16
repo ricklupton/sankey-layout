@@ -31,10 +31,10 @@ export default function sankeyLayout() {
    * @param G {Graph} - The input graph. Nodes must have `rank` attributes.
    * Edges must have `value` attributes.
    */
-  function layout(links=[], nodes=[],
+  function layout(linksIn=[], nodesIn=[],
                   {rankSets=[], order=null, alignMaterials=false} = {}) {
 
-    const G = createGraph(nodes, links);
+    const G = createGraph(nodesIn, linksIn);
 
     if (order == null) {
       // Assign ranks
