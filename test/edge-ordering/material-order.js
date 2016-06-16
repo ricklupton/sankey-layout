@@ -6,7 +6,7 @@ import test from 'tape';
 import assertAlmostEqual from '../assert-almost-equal';
 
 
-test('edgeOrdering: materialOrder', t => {
+test.skip('edgeOrdering: materialOrder', t => {
   const G1 = exampleMaterials(['m1', 'm2']);
   const mo1 = materialOrder(G1, '2');
   t.deepEqual(mo1, ['m1', 'm2']);
