@@ -1,6 +1,6 @@
 {
   "name": "sankey-layout",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Sankey diagram layout algorithm",
   "main": "index.js",
   "directories": {
