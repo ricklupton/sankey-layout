@@ -65,7 +65,7 @@ export function exampleTwoLevelWithLoops(material=undefined) {
 export function exampleBlastFurnaceWithDummy() {
   let G = new Graph({ directed: true });
 
-  // Simplified example of flows through coke oven and blast furnace
+  // Simplified example of links through coke oven and blast furnace
   // Padded to have dummy nodes
 
   let ranks = [
@@ -93,7 +93,7 @@ export function exampleBlastFurnaceWithDummy() {
   G.setEdge('bf', 'output', {});
   G.setEdge('bf', 'export', {});
 
-  // additional export flows, and input-sinter
+  // additional export links, and input-sinter
   G.setEdge('sinter', '_sinter_export', {});
   G.setEdge('_sinter_export', 'export', {});
   G.setEdge('oven', '_oven_export_1', {});

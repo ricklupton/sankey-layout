@@ -1,4 +1,4 @@
-import flowLayout from '../../src/edge-positioning';
+import linkLayout from '../../src/edge-positioning';
 // import { exampleBlastFurnaceWithDummy } from './examples';
 
 import { Graph } from 'graphlib';
@@ -6,76 +6,76 @@ import test from 'tape';
 
 import { assertAlmostEqual, assertNotAlmostEqual } from '../assert-almost-equal';
 
-test('flowLayout: flow attributes', t => {
+test('linkLayout: link attributes', t => {
   const {G} = example2to1(0);
-  const layout = flowLayout();
-  const flows = layout(G);
+  const layout = linkLayout();
+  const links = layout(G);
 
   // ids
-  t.deepEqual(flows.map(f => f.id), ['0-2-m1', '1-2-m2'], 'f.id');
+  t.deepEqual(links.map(f => f.id), ['0-2-m1', '1-2-m2'], 'f.id');
 
   // x coordinates
-  t.deepEqual(flows.map(f => f.x0), [0, 0], 'f.x0');
-  t.deepEqual(flows.map(f => f.x1), [2, 2], 'f.x1');
+  t.deepEqual(links.map(f => f.x0), [0, 0], 'f.x0');
+  t.deepEqual(links.map(f => f.x1), [2, 2], 'f.x1');
 
   // y coordinates
-  t.deepEqual(flows.map(f => f.y0), [0.5, 3.5], 'f.y0');
-  t.deepEqual(flows.map(f => f.y1), [2.5, 3.5], 'f.y1');
+  t.deepEqual(links.map(f => f.y0), [0.5, 3.5], 'f.y0');
+  t.deepEqual(links.map(f => f.y1), [2.5, 3.5], 'f.y1');
 
   // directions
-  t.deepEqual(flows.map(f => f.d0), ['r', 'r'], 'f.d0');
-  t.deepEqual(flows.map(f => f.d1), ['r', 'r'], 'f.d1');
+  t.deepEqual(links.map(f => f.d0), ['r', 'r'], 'f.d0');
+  t.deepEqual(links.map(f => f.d1), ['r', 'r'], 'f.d1');
 
   t.end();
 });
 
 
-test('flowLayout: loose edges', t => {
+test('linkLayout: loose edges', t => {
   const {G} = example2to1(0);
-  const layout = flowLayout();
-  const flows = layout(G);
+  const layout = linkLayout();
+  const links = layout(G);
 
   // should not overlap
-  console.log(flows);
-  t.ok((flows[0].r1 + flows[0].dy/2) <= (flows[1].r1 - flows[1].dy/2),
-       'flows should not overlap');
+  console.log(links);
+  t.ok((links[0].r1 + links[0].dy/2) <= (links[1].r1 - links[1].dy/2),
+       'links should not overlap');
 
   t.end();
 });
 
 
-test('flowLayout: tight curvature', t => {
-  // setting f= 0.3 moves up the lower flow to constrain the curvature at node
+test('linkLayout: tight curvature', t => {
+  // setting f= 0.3 moves up the lower link to constrain the curvature at node
   // 2.
   const {G} = example2to1(0.3);
-  const layout = flowLayout();
-  const flows = layout(G);
+  const layout = linkLayout();
+  const links = layout(G);
 
   // curvature should no longer be symmetric
-  assertNotAlmostEqual(t, flows.map(f => f.r0), flows.map(f => f.r1), 1e-6,
+  assertNotAlmostEqual(t, links.map(f => f.r0), links.map(f => f.r1), 1e-6,
                        'radius should not be equal at both ends');
 
   // should not overlap
-  assertAlmostEqual(t, (flows[0].r1 + flows[0].dy/2), (flows[1].r1 - flows[1].dy/2), 1e-6,
-       'flow curvatures should just touch');
+  assertAlmostEqual(t, (links[0].r1 + links[0].dy/2), (links[1].r1 - links[1].dy/2), 1e-6,
+       'link curvatures should just touch');
 
   t.end();
 });
 
 
-test('flowLayout: maximum curvature limit', t => {
-  // setting f=1 moves up the lower flow so far the curvature hits the limit
+test('linkLayout: maximum curvature limit', t => {
+  // setting f=1 moves up the lower link so far the curvature hits the limit
   // 2.
   const {G} = example2to1(1.0);
-  const layout = flowLayout();
-  const flows = layout(G);
+  const layout = linkLayout();
+  const links = layout(G);
 
   // curvature should no longer be symmetric
-  assertNotAlmostEqual(t, flows.map(f => f.r0), flows.map(f => f.r1), 1e-6,
+  assertNotAlmostEqual(t, links.map(f => f.r0), links.map(f => f.r1), 1e-6,
                        'radius should not be equal at both ends');
 
-  assertAlmostEqual(t, (flows[0].r1 - flows[0].dy/2), 0, 1e-6,
-                    'inner flow curvature should be zero');
+  assertAlmostEqual(t, (links[0].r1 - links[0].dy/2), 0, 1e-6,
+                    'inner link curvature should be zero');
 
   t.end();
 });

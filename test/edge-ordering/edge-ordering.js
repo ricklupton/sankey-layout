@@ -77,13 +77,13 @@ test('edgeOrdering: starting and ending in same slice', t => {
 
 
 test('edgeOrdering: materials are sorted when grouping nodes first', t => {
-  // order of edges doesn't affect order of flows
+  // order of edges doesn't affect order of links
   const G1 = exampleMaterials(['m1', 'm2']),
         G2 = exampleMaterials(['m2', 'm1']);
   orderEdges(G1, { alignMaterials: false });
   orderEdges(G2, { alignMaterials: false });
 
-  t.deepEqual(G1.node('2').outgoing, G1.node('3').incoming, 'flows not twisted');
+  t.deepEqual(G1.node('2').outgoing, G1.node('3').incoming, 'links not twisted');
 
   t.deepEqual(G1.node('2').outgoing, G2.node('2').outgoing, 'outgoing order unchanged');
   t.deepEqual(G1.node('3').incoming, G2.node('3').incoming, 'incoming order unchanged');

@@ -7,7 +7,7 @@ import addDummyNodes from '../src/add-dummy-nodes';
 import ordering from '../src/node-ordering';
 import justified from '../src/node-positioning/justified';
 import orderEdges from '../src/edge-ordering';
-import flowLayout from '../src/edge-positioning';
+import linkLayout from '../src/edge-positioning';
 
 import sankeyLayout from '../src/layout';
 
@@ -15,11 +15,11 @@ import sankeyLayout from '../src/layout';
 test('combined layout', t => {
   // XXX TODO start from rank assignment
 
-  const {processes, flows} = exampleBlastFurnace();
+  const {nodes, links} = exampleBlastFurnace();
 
   //////// Steps ///////
 
-  const G1 = createGraph(processes, flows);
+  const G1 = createGraph(nodes, links);
   assignRanks(G1, []);
   addDummyNodes(G1);
   const order = ordering(G1);
@@ -32,13 +32,13 @@ test('combined layout', t => {
   orderEdges(G1);
 
   // Position edges and calculate curvatures
-  const f1 = flowLayout()(G1);
+  const f1 = linkLayout()(G1);
 
   //////// Combined layout ////////
 
   const layout = sankeyLayout()
           .size([10, 8]);
-  layout(flows, processes);
+  layout(links, nodes);
 
   const n2 = layout.nodes(),
         f2 = layout.links();
@@ -47,18 +47,18 @@ test('combined layout', t => {
 
   t.deepEqual(n2, n1, 'nodes');
 
-  t.deepEqual(f2, f1, 'flows');
+  t.deepEqual(f2, f1, 'links');
 
   t.end();
 });
 
 
 function exampleBlastFurnace() {
-  // Simplified example of flows through coke oven and blast furnace
-  const processes = [
+  // Simplified example of links through coke oven and blast furnace
+  const nodes = [
   ];
 
-  const flows = [
+  const links = [
     // main flow
     {source: 'input', target: 'oven', value: 2.5},
     {source: 'oven', target: 'coke', value: 2.5},
@@ -68,7 +68,7 @@ function exampleBlastFurnace() {
     {source: 'bf', target: 'output', value: 1},
     {source: 'bf', target: 'export', value: 1},
 
-    // additional export flows, and input-sinter
+    // additional export links, and input-sinter
     {source: 'sinter', target: 'export', value: 0.2},
     {source: 'oven', target: 'export', value: 0.2},
     {source: 'input', target: 'sinter', value: 0.2},
@@ -78,5 +78,5 @@ function exampleBlastFurnace() {
     {source: 'bf', target: 'input', value: 0.5},
   ];
 
-  return {processes, flows};
+  return {nodes, links};
 }

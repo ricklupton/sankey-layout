@@ -7,7 +7,7 @@
 import { findFirst, sweepCurvatureInwards } from './utils';
 
 
-export default function flowLayout() {
+export default function linkLayout() {
 
   function layout(G) {
     setEdgeEndpoints(G);

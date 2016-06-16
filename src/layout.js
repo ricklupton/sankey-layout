@@ -10,7 +10,7 @@ import addDummyNodes from './add-dummy-nodes';
 import ordering from './node-ordering';
 import justified from './node-positioning/justified';
 import orderEdges from './edge-ordering';
-import flowLayout from './edge-positioning';
+import linkLayout from './edge-positioning';
 
 
 /**
@@ -20,7 +20,7 @@ import flowLayout from './edge-positioning';
 export default function sankeyLayout() {
 
   const nodeLayout = justified(),
-        edgeLayout = flowLayout();
+        edgeLayout = linkLayout();
 
   let nodes = [],
       links = [];
@@ -31,10 +31,10 @@ export default function sankeyLayout() {
    * @param G {Graph} - The input graph. Nodes must have `rank` attributes.
    * Edges must have `value` attributes.
    */
-  function layout(flows=[], processes=[],
+  function layout(links=[], nodes=[],
                   {rankSets=[], order=null, alignMaterials=false} = {}) {
 
-    const G = createGraph(processes, flows);
+    const G = createGraph(nodes, links);
 
     if (order == null) {
       // Assign ranks
