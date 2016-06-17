@@ -121,7 +121,7 @@ test('addDummyNodes: multigraph', t => {
   addDummyNodes(G1);
 
   assertSetEqual(t, G1.nodes(), ['a', 'b', '__a_b_1'],
-                 'only one dummy node for all materials');
+                 'only one dummy node for all types');
   assertSetEqual(t, G1.edges(), [
     {v: 'a', w: '__a_b_1', name: 'm1'},
     {v: '__a_b_1', w: 'b', name: 'm1'},

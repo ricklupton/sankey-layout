@@ -2,17 +2,17 @@
 import sumBy from 'lodash.sumby';
 
 
-export default function materialOrder(G, u) {
+export default function linkTypeOrder(G, u) {
   const incoming = G.inEdges(u),
         outgoing = G.outEdges(u);
 
-  const edgesByMaterial = new Map();
+  const edgesByType = new Map();
   [...incoming, ...outgoing].forEach(e => {
-    if (!edgesByMaterial.has(e.name)) edgesByMaterial.set(e.name, []);
-    edgesByMaterial.get(e.name).push(e);
+    if (!edgesByType.has(e.name)) edgesByType.set(e.name, []);
+    edgesByType.get(e.name).push(e);
   });
 
-  const dirs = new Map(Array.from(edgesByMaterial.entries()).map(([k, v]) => {
+  const dirs = new Map(Array.from(edgesByType.entries()).map(([k, v]) => {
     console.log(k, v, G.edge(v[0]));
     const total = sumBy(v, e => G.edge(e).value),
           wdirs = sumBy(v, e => G.edge(e).value * otherY(e));

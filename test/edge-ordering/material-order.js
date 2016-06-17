@@ -1,4 +1,4 @@
-import materialOrder from '../../src/edge-ordering/material-order';
+import linkTypeOrder from '../../src/edge-ordering/link-type-order';
 
 import { Graph } from 'graphlib';
 import test from 'tape';
@@ -6,13 +6,13 @@ import test from 'tape';
 import assertAlmostEqual from '../assert-almost-equal';
 
 
-test.skip('edgeOrdering: materialOrder', t => {
-  const G1 = exampleMaterials(['m1', 'm2']);
-  const mo1 = materialOrder(G1, '2');
+test.skip('edgeOrdering: linkTypeOrder', t => {
+  const G1 = exampleTypes(['m1', 'm2']);
+  const mo1 = linkTypeOrder(G1, '2');
   t.deepEqual(mo1, ['m1', 'm2']);
 
-  const G2 = exampleMaterials(['m2', 'm1']);
-  const mo2 = materialOrder(G2, '2');
+  const G2 = exampleTypes(['m2', 'm1']);
+  const mo2 = linkTypeOrder(G2, '2');
   t.deepEqual(mo2, ['m2', 'm1']);
 
   t.end();
@@ -20,7 +20,7 @@ test.skip('edgeOrdering: materialOrder', t => {
 
 
 
-function exampleMaterials(materials) {
+function exampleTypes(types) {
   let G = new Graph({ directed: true, multigraph: true });
 
   //
@@ -33,12 +33,12 @@ function exampleMaterials(materials) {
   G.setNode('2', {x: 1, y: 0.5});
   G.setNode('3', {x: 2, y: 0.5});
 
-  G.setEdge('0', '2', {value: 1.5}, materials[0]);
-  G.setEdge('0', '2', {value: 0.5}, materials[1]);
-  G.setEdge('1', '2', {value: 0.5}, materials[0]);
-  G.setEdge('1', '2', {value: 1.5}, materials[1]);
-  G.setEdge('2', '3', {value: 2.0}, materials[0]);
-  G.setEdge('2', '3', {value: 2.0}, materials[1]);
+  G.setEdge('0', '2', {value: 1.5}, types[0]);
+  G.setEdge('0', '2', {value: 0.5}, types[1]);
+  G.setEdge('1', '2', {value: 0.5}, types[0]);
+  G.setEdge('1', '2', {value: 1.5}, types[1]);
+  G.setEdge('2', '3', {value: 2.0}, types[0]);
+  G.setEdge('2', '3', {value: 2.0}, types[1]);
 
   return G;
 }

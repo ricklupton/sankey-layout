@@ -1,6 +1,6 @@
 /** @module edge-ordering */
 
-import materialOrder from './material-order';
+import linkTypeOrder from './link-type-order';
 import linkDirection from './link-direction';
 
 
@@ -13,17 +13,17 @@ import linkDirection from './link-direction';
  * @param {Graph} G - The graph. Nodes must have `x` and `y` attributes.
  *
  */
-export default function orderEdges(G, {alignMaterials = false} = {}) {
+export default function orderEdges(G, {alignLinkTypes = false} = {}) {
   G.nodes().forEach(u => {
     const node = G.node(u);
 
     node.incoming = G.inEdges(u);
     node.outgoing = G.outEdges(u);
 
-    if (alignMaterials) {
-      const mo = materialOrder(G, u);
-      node.incoming.sort(compareDirectionGroupingMaterials(G, mo, false));
-      node.outgoing.sort(compareDirectionGroupingMaterials(G, mo, true));
+    if (alignLinkTypes) {
+      const mo = linkTypeOrder(G, u);
+      node.incoming.sort(compareDirectionGroupingTypes(G, mo, false));
+      node.outgoing.sort(compareDirectionGroupingTypes(G, mo, true));
     } else {
       node.incoming.sort(compareDirection(G, false));
       node.outgoing.sort(compareDirection(G, true));
@@ -38,7 +38,7 @@ function compareDirection(G, clockwise=true) {
         db = linkDirection(G, b),
         c = clockwise ? 1 : -1;
 
-    // links between same node, sort on material
+    // links between same node, sort on type
     if (a.v === b.v && a.w === b.w) {
       if (typeof a.name === 'number' && typeof b.name === 'number') {
         return a.name - b.name;
@@ -70,14 +70,14 @@ function compareDirection(G, clockwise=true) {
 }
 
 
-function compareDirectionGroupingMaterials(G, mo, clockwise=true) {
+function compareDirectionGroupingTypes(G, mo, clockwise=true) {
   return function(a, b) {
-    // sort first by material order
+    // sort first by type order
     if (a.name !== b.name) {
       return mo.indexOf(a.name) - mo.indexOf(b.name);
     }
 
-    // Sort on direction for same material
+    // Sort on direction for same type
     const da = linkDirection(G, a),
           db = linkDirection(G, b),
           c = clockwise ? 1 : -1;

@@ -83,8 +83,8 @@ test('rank assignment: groupedGraph with reversed nodes', t => {
 
 test('rank assignment: groupedGraph ignores multiple edges', t => {
   const G = new Graph({directed: true, multigraph: true});
-  G.setEdge('a', 'b', {}, 'material1');
-  G.setEdge('a', 'b', {}, 'material2');
+  G.setEdge('a', 'b', {}, 'type1');
+  G.setEdge('a', 'b', {}, 'type2');
 
   const GG = groupedGraph(G, []);
 

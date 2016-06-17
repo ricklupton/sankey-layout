@@ -76,22 +76,22 @@ test('edgeOrdering: starting and ending in same slice', t => {
 });
 
 
-test('edgeOrdering: materials are sorted when grouping nodes first', t => {
+test('edgeOrdering: types are sorted when grouping nodes first', t => {
   // order of edges doesn't affect order of links
-  const G1 = exampleMaterials(['m1', 'm2']),
-        G2 = exampleMaterials(['m2', 'm1']);
-  orderEdges(G1, { alignMaterials: false });
-  orderEdges(G2, { alignMaterials: false });
+  const G1 = exampleTypes(['m1', 'm2']),
+        G2 = exampleTypes(['m2', 'm1']);
+  orderEdges(G1, { alignLinkTypes: false });
+  orderEdges(G2, { alignLinkTypes: false });
 
   t.deepEqual(G1.node('2').outgoing, G1.node('3').incoming, 'links not twisted');
 
   t.deepEqual(G1.node('2').outgoing, G2.node('2').outgoing, 'outgoing order unchanged');
   t.deepEqual(G1.node('3').incoming, G2.node('3').incoming, 'incoming order unchanged');
 
-  const G3 = exampleMaterials([0, 1]),
-        G4 = exampleMaterials([1, 0]);
-  orderEdges(G3, { alignMaterials: false });
-  orderEdges(G4, { alignMaterials: false });
+  const G3 = exampleTypes([0, 1]),
+        G4 = exampleTypes([1, 0]);
+  orderEdges(G3, { alignLinkTypes: false });
+  orderEdges(G4, { alignLinkTypes: false });
 
   t.deepEqual(G3.node('2').outgoing, G4.node('2').outgoing, 'outgoing order unchanged');
   t.deepEqual(G3.node('3').incoming, G4.node('3').incoming, 'incoming order unchanged');
@@ -100,9 +100,9 @@ test('edgeOrdering: materials are sorted when grouping nodes first', t => {
 });
 
 
-test('edgeOrdering: materials are aligned when requested', t => {
-  const G1 = exampleMaterials(['m1', 'm2']);
-  orderEdges(G1, { alignMaterials: true });
+test('edgeOrdering: types are aligned when requested', t => {
+  const G1 = exampleTypes(['m1', 'm2']);
+  orderEdges(G1, { alignLinkTypes: true });
 
   t.deepEqual(G1.node('0').outgoing, [
     {v: '0', w: '2', name: 'm1'},
@@ -180,7 +180,7 @@ function exampleLoops() {
 }
 
 
-function exampleMaterials(materials) {
+function exampleTypes(types) {
   let G = new Graph({ directed: true, multigraph: true });
 
   //
@@ -192,7 +192,7 @@ function exampleMaterials(materials) {
   G.setNode('1', {x: 0, y: 3});
   G.setNode('2', {x: 1, y: 0.5});
   G.setNode('3', {x: 2, y: 0.5});
-  for (let m of materials) {
+  for (let m of types) {
     G.setEdge('0', '2', {value: 1}, m);
     G.setEdge('1', '2', {value: 1}, m);
     G.setEdge('2', '3', {value: 2}, m);

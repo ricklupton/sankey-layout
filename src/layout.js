@@ -32,7 +32,7 @@ export default function sankeyLayout() {
    * Edges must have `value` attributes.
    */
   function layout(linksIn=[], nodesIn=[],
-                  {rankSets=[], order=null, alignMaterials=false} = {}) {
+                  {rankSets=[], order=null, alignLinkTypes=false} = {}) {
 
     const G = createGraph(nodesIn, linksIn);
 
@@ -57,7 +57,7 @@ export default function sankeyLayout() {
     nodes = nodeLayout(G, order);
 
     // Order incoming and outgoing edges at each node
-    orderEdges(G, {alignMaterials});
+    orderEdges(G, {alignLinkTypes});
 
     // Position edges and calculate curvatures
     links = edgeLayout(G);
