@@ -3,10 +3,12 @@ import { alg } from 'graphlib';
 export default function initialOrdering(G) {
   let order = [];
 
-  const start = G.nodes().filter(u => G.node(u).rank === 0)
-          .concat(G.sources());
+  let start = G.nodes()
+        .filter(u => G.node(u).rank === 0)
+        .concat(G.sources());
   if (start.length === 0) {
-    throw Error('No sources or nodes with rank 0');
+    // start with first node even if it's not a source or rank 0
+    start = G.nodes().slice(0, 1);
   }
 
   alg.preorder(G, start).forEach(u => {
