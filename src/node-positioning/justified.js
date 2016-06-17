@@ -172,7 +172,9 @@ function bandValues(G, order) {
   const Nr = order.length,
         Nb = order[0].length;
 
-  const values = new Array(Nb).fill(0);
+  const values = new Array(Nb);
+  for (let i = 0; i < Nb; i++) values[i] = 0;
+
   order.forEach(rank => {
     rank.forEach((band, j) => {
       const total = sumBy(band, u => G.node(u).value);

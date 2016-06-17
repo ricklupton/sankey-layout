@@ -53,7 +53,9 @@ export function countBetweenCrossings(G, orderA, orderB) {
   while (firstIndex < q) firstIndex *= 2;
   const treeSize = 2 * firstIndex - 1;  // number of tree nodes
   firstIndex -= 1;                      // index of leftmost leaf
-  let tree = new Array(treeSize).fill(0);
+
+  let tree = new Array(treeSize);
+  for (let i = 0; i < treeSize; i++) tree[i] = 0;
 
   // count the crossings
   let count = 0;
