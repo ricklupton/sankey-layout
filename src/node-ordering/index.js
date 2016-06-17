@@ -24,7 +24,7 @@ export default function ordering(G, maxIterations=25) {
     sortNodes(G, order, (i % 2 == 0));
     swapNodes(G, order);
     if (allCrossings(G, order) < allCrossings(G, best)) {
-      console.log('improved', allCrossings(G, order), order);
+      // console.log('improved', allCrossings(G, order), order);
       best = copy(order);
     }
   }

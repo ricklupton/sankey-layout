@@ -34,7 +34,7 @@ export function findSpanningTree(G, v0) {
   doDfs(G, v0, visited, tree, thread);
   G.nodes().forEach(u => {
     if (!visited.has(u)) {
-      console.log('missed visiting', u);
+      // console.log('missed visiting', u);
       doDfs(G, u, visited, tree, thread);
     }
   });

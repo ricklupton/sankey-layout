@@ -13,7 +13,6 @@ export default function linkTypeOrder(G, u) {
   });
 
   const dirs = new Map(Array.from(edgesByType.entries()).map(([k, v]) => {
-    console.log(k, v, G.edge(v[0]));
     const total = sumBy(v, e => G.edge(e).value),
           wdirs = sumBy(v, e => G.edge(e).value * otherY(e));
     return [k, wdirs / total];

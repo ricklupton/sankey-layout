@@ -83,12 +83,9 @@ test('justifiedPositioning: bands', t => {
         // gap
 
   const nodes = G.nodes().map(u => G.node(u));
-  console.log(nodes);
-  console.log(margin1, margin2);
 
   // Bands should not overlap
   const yb = margin1 + nodes[0].dy + margin1;
-  console.log(yb);
   t.ok(nodes[0].y >= margin1, 'node 0 >= margin');
   t.ok(nodes[2].y >= margin1, 'node 2 >= margin');
   t.ok(nodes[0].y + nodes[0].dy < yb, 'node 0 above boundary');

@@ -36,7 +36,6 @@ test('linkLayout: loose edges', t => {
   const links = layout(G);
 
   // should not overlap
-  console.log(links);
   t.ok((links[0].r1 + links[0].dy/2) <= (links[1].r1 - links[1].dy/2),
        'links should not overlap');
 
