@@ -10,6 +10,7 @@ import { assertSetEqual } from '../assertions';
 
 test('rank assignment: groupedGraph', t => {
   let { G, rankSets } = exampleWithLoop();
+  const origRankSets = [...rankSets];
 
   let G2 = groupedGraph(G, rankSets);
 
@@ -21,6 +22,8 @@ test('rank assignment: groupedGraph', t => {
     ['3', { type: 'same', nodes: ['e'] }],
     ['4', { type: 'same', nodes: ['f'] }],
   ], 'nodes');
+
+  t.deepEqual(rankSets, origRankSets, 'does not modify inputs');
 
   t.deepEqual(G2.edges(), [
     {v: '0', w: '2'},  // a-b

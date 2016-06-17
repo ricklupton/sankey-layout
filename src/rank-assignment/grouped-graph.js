@@ -24,10 +24,10 @@ export default function groupedGraph(G, rankSets) {
     // find the first source node
     const sources = G.sources();
     if (sources.length > 0) {
-      rankSets.unshift({ type: 'min', nodes: [ sources[0] ] });
+      rankSets = [{ type: 'min', nodes: [ sources[0] ] }, ...rankSets];
     } else {
       // no sources, just use the first nodes
-      rankSets.unshift({ type: 'min', nodes: [ G.nodes()[0] ] });
+      rankSets = [{ type: 'min', nodes: [ G.nodes()[0] ] }, ...rankSets];
     }
   }
 
