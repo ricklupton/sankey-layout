@@ -5,9 +5,6 @@ export default function addDummyNodes(G) {
     const V = G.node(e.v), W = G.node(e.w);
     let r = V.rank, id, dummyRanks = [];
 
-    G.edge(e).source = V;
-    G.edge(e).target = W;
-
     if (r + 1 <= W.rank) {
       // add more to get forwards
       if (V.direction === 'l')

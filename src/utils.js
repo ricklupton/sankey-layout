@@ -20,6 +20,12 @@ export function createGraph(nodes, edges) {
     }
   });
 
+  // Add references to the source and target details of each edge.
+  G.edges().forEach(e => {
+    G.edge(e).source = G.node(e.v);
+    G.edge(e).target = G.node(e.w);
+  });
+
   return G;
 }
 

@@ -27,6 +27,12 @@ test('createGraph', t => {
   t.equal(G.edge('d', 'e', undefined), undefined, 'edges have name from type 2');
   t.notEqual(G.edge('e', 'b', undefined), undefined, 'edges have name undefined if type not set');
 
+  t.deepEqual(G.edge('d', 'e', 'iron'), {
+    source: { data: {} },
+    target: { data: {} },
+    data: { source: 'd', target: 'e', type: 'iron' },
+  });
+
   t.deepEqual(G.node('c'), { data: { id: 'c', title: 'CC' }});
 
   nodes.push({id: 'xx'});

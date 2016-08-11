@@ -44,14 +44,6 @@ export default function sankeyLayout() {
       // Assign orders within ranks
       order = ordering(G);
     } else {
-      // XXX tidy this up - current this is needed for sensible titles later,
-      // but source and title are set by addDummyNodes.
-      G.edges().forEach(e => {
-        const V = G.node(e.v), W = G.node(e.w);
-        G.edge(e).source = V;
-        G.edge(e).target = W;
-      });
-
       // filter order to only include known nodes
       order = data.order.map(
         bands => bands.map(
