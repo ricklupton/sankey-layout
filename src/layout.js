@@ -23,7 +23,8 @@ export default function sankeyLayout() {
         edgeLayout = linkLayout();
 
   let nodes = [],
-      links = [];
+      links = [],
+      order = null;
 
   /**
    * Layout the diagram described by the graph G.
@@ -31,14 +32,13 @@ export default function sankeyLayout() {
    * @param G {Graph} - The input graph. Nodes must have `rank` attributes.
    * Edges must have `value` attributes.
    */
-  function layout(linksIn=[], nodesIn=[],
-                  {rankSets=[], order=null, alignLinkTypes=false} = {}) {
+  function layout(linksIn=[], nodesIn=[], data={}) {
 
     const G = createGraph(nodesIn, linksIn);
 
-    if (order == null) {
+    if (data.order == null) {
       // Assign ranks
-      assignRanks(G, rankSets);
+      assignRanks(G, data.rankSets || []);
       addDummyNodes(G);
 
       // Assign orders within ranks
@@ -51,13 +51,19 @@ export default function sankeyLayout() {
         G.edge(e).source = V;
         G.edge(e).target = W;
       });
+
+      // filter order to only include known nodes
+      order = data.order.map(
+        bands => bands.map(
+          nodes => nodes.filter(
+            n => G.node(n) !== undefined)));
     }
 
     // Position and scale nodes within ranks
     nodes = nodeLayout(G, order);
 
     // Order incoming and outgoing edges at each node
-    orderEdges(G, {alignLinkTypes});
+    orderEdges(G, {alignLinkTypes: data.alignLinkTypes || false});
 
     // Position edges and calculate curvatures
     links = edgeLayout(G);
@@ -73,6 +79,10 @@ export default function sankeyLayout() {
 
   layout.links = function() {
     return links;
+  };
+
+  layout.order = function() {
+    return order;
   };
 
   /**

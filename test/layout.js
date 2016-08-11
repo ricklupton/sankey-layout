@@ -53,6 +53,19 @@ test('combined layout', t => {
 });
 
 
+test('layout: works with empty input', t => {
+  t.doesNotThrow(() => {
+    sankeyLayout()([], []);
+  });
+
+  // ignores nodes in order that aren't in node list
+  t.doesNotThrow(() => {
+    sankeyLayout()([], [], { order: [[['a']]] });
+  });
+  t.end();
+});
+
+
 function exampleBlastFurnace() {
   // Simplified example of links through coke oven and blast furnace
   const nodes = [

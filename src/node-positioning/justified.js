@@ -100,7 +100,10 @@ export default function justifiedPositioning() {
     setNodeValues(G, edgeValue, nodeDirection);
 
     const maxValue = sumBy(bandValues(G, order));
-    if (maxValue <= 0) throw Error('no value');
+    if (maxValue <= 0) {
+      scale = 1;
+      return;
+    }
 
     scale = size[1] / maxValue;
     if (whitespace != 1) scale *= (1 - whitespace);
