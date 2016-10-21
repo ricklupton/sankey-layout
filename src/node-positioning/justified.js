@@ -72,6 +72,11 @@ export default function justifiedPositioning() {
           node.spaceBelow = gaps[i] * kg;
           yy += node.dy + node.spaceBelow;
           prevGap = node.spaceBelow;
+
+          // XXX is this a good idea?
+          if (node.data && node.data.forceY !== undefined) {
+            node.y = margin + node.data.forceY * (height - node.dy);
+          }
         });
         if (band.length > 0) {
           G.node(band[band.length - 1]).spaceBelow =

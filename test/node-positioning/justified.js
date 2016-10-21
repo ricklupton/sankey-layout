@@ -50,6 +50,35 @@ test('justifiedPositioning: basic positioning', t => {
 });
 
 
+test('justifiedPositioning: override', t => {
+  const {G, order} = example4to1();
+
+  // margin = 8 * 50% / 5 = 0.8
+  const margin = 8 * 0.5 / 5;
+  const pos = justified().size([1, 8]);
+
+  console.log('------ before', G.node('4'));
+  pos(G, order);
+  console.log('------ after', G.node('4'));
+
+  const autoY = G.node('4').y;
+
+  // Force to top of band
+  G.node('4').data.forceY = 0;
+  pos(G, order);
+  t.notEqual(G.node('4').y, autoY, 'forced y - changed 1');
+  assertAlmostEqual(t, G.node('4').y, margin, 1e-3, 'forced y - value 1');
+
+  // Force to bottom of band
+  G.node('4').data.forceY = 1;
+  pos(G, order);
+  t.notEqual(G.node('4').y, autoY, 'forced y - changed 2');
+  assertAlmostEqual(t, G.node('4').y, 8 - margin - G.node('4').dy, 1e-3, 'forced y - value 2');
+
+  t.end();
+});
+
+
 test('justifiedPositioning: nodes with zero value are ignored', t => {
   const {G, order} = example4to1();
   G.setEdge('2', '4', {data: {value: 0}});
