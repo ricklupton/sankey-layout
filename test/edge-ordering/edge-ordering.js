@@ -53,24 +53,26 @@ test('edgeOrdering: starting and ending in same slice', t => {
 
   const nodes = G.nodes().map(u => G.node(u));
 
-  const incoming = G.node('2').incoming,
-        outgoing = G.node('2').outgoing;
+  const incoming = G.node('3').incoming,
+        outgoing = G.node('3').outgoing;
 
-  // left-hand side of 2
+  // left-hand side of 3
   t.deepEqual(incoming, [
-    {v: '1', w: '2'},
-    {v: '0', w: '2'},
-    {v: '4', w: '2'},
-    {v: '3', w: '2'},
-  ], 'incoming edges into 2');
-
-  // right-hand side of 2
-  t.deepEqual(outgoing, [
-    {v: '2', w: '1'},
-    {v: '2', w: '5'},
-    {v: '2', w: '4'},
     {v: '2', w: '3'},
-  ], 'outgoing edges from 2');
+    {v: '1', w: '3'},
+    {v: '0', w: '3'},
+    {v: '5', w: '3'},
+    {v: '4', w: '3'},
+  ], 'incoming edges into 3');
+
+  // right-hand side of 3
+  t.deepEqual(outgoing, [
+    {v: '3', w: '2'},
+    {v: '3', w: '1'},
+    {v: '3', w: '6'},
+    {v: '3', w: '5'},
+    {v: '3', w: '4'},
+  ], 'outgoing edges from 3');
 
   t.end();
 });
@@ -154,26 +156,28 @@ function exampleLoops() {
   let G = new Graph({ directed: true });
 
   //
-  //      |-1-|
-  //  0 --- 2 --- 5
-  //     ||-3-||
-  //     |--4--|
+  //     |--1--|
+  //     ||-2-||
+  //  0 --- 3 --- 6
+  //     ||-4-||
+  //     |--5--|
   //
 
-  G.setNode('0', {x: 0, y: 1});
+  G.setNode('0', {x: 0, y: 2});
 
   G.setNode('1', {x: 1, y: 0});
   G.setNode('2', {x: 1, y: 1});
   G.setNode('3', {x: 1, y: 2});
   G.setNode('4', {x: 1, y: 3});
+  G.setNode('5', {x: 1, y: 4});
 
-  G.setNode('5', {x: 2, y: 1});
+  G.setNode('6', {x: 2, y: 3});
 
-  G.setEdge('0', '2', {value: 2});
-  G.setEdge('2', '5', {value: 2});
-  ['1', '3', '4'].forEach(n => {
-    G.setEdge('2', n, {value: 2});
-    G.setEdge(n, '2', {value: 2});
+  G.setEdge('0', '3', {value: 2});
+  G.setEdge('3', '6', {value: 2});
+  ['1', '2', '4', '5'].forEach(n => {
+    G.setEdge('3', n, {value: 2});
+    G.setEdge(n, '3', {value: 2});
   });
 
   return {G};

@@ -53,9 +53,9 @@ function compareDirection(G, clockwise=true) {
     if (Math.abs(da - db) < 1e-3) {
       if (a.v && a.w && b.v && b.w) {
         if (a.w === b.w) {
-          return c * (da > 0 ? -1 : 1 ) * (G.node(a.v).y - G.node(b.v).y);
+          return -1 * (G.node(a.v).y - G.node(b.v).y);
         } else if (a.v === b.v) {
-          return c * (da > 0 ? -1 : 1 ) * (G.node(a.w).y - G.node(b.w).y);
+          return -1 * (G.node(a.w).y - G.node(b.w).y);
         } else {
           return 0;
         }

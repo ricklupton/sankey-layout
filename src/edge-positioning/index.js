@@ -70,7 +70,11 @@ function setEdgeCurvatures(G) {
 function maximumRadiusOfCurvature(link) {
   var Dx = link.x1 - link.x0,
       Dy = link.y1 - link.y0;
-  return (Dy !== 0) ? (Dx*Dx + Dy*Dy) / Math.abs(4*Dy) : Infinity;
+  if (link.d0 !== link.d1) {
+    return Math.abs(Dy) / 2.1;
+  } else {
+    return (Dy !== 0) ? (Dx*Dx + Dy*Dy) / Math.abs(4*Dy) : Infinity;
+  }
 }
 
 
@@ -78,7 +82,7 @@ function setEdgeEndCurvatures(edges, rr) {
   // initialise edges, find reversal of curvature
   edges.forEach((edge, j) => {
     edge.Rmax = maximumRadiusOfCurvature(edge);
-    edge[rr] = Math.max(edge.dy / 2, edge.Rmax * 0.6);
+    edge[rr] = Math.max(edge.dy / 2, (edge.d0 === edge.d1 ? edge.Rmax * 0.6 : (5 + edge.dy / 2)));
   });
 
   let jmid = (rr === 'r0'
