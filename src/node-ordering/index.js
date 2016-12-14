@@ -29,6 +29,9 @@ export default function ordering(G, maxIterations=25) {
     }
   }
 
+  // Put all nodes into the same band
+  best = best.map(rank => [rank]);
+
   return best;
 }
 

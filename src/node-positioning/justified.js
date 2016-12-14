@@ -9,7 +9,6 @@
 import max from 'lodash.max';
 import sumBy from 'lodash.sumby';
 import isFunction from 'lodash.isfunction';
-import isArray from 'lodash.isarray';
 import { positionHorizontally, spanMinWidths } from './horizontal';
 
 
@@ -29,13 +28,6 @@ export default function justifiedPositioning() {
     setNodeEdgeHeights(G, edgeValue, scale);
 
     const bandVals = bandValues(G, order);
-
-    // input types:
-    // [ [r1b1n1, r1b1n2], [r2b1n1] ]
-    // [ [ [r1b1n1], [r1b2n1] ], ...
-    if (order.length > 0 && order[0].length > 0 && !isArray(order[0][0])) {
-      order = order.map(rank => [rank]);
-    }
 
     order.forEach(rank => {
 
@@ -173,9 +165,6 @@ function setNodeEdgeHeights(G, edgeValue, scale) {
 
 function bandValues(G, order) {
   if (order.length === 0 || order[0].length === 0) return [];
-  if (!isArray(order[0][0])) {
-    order = order.map(rank => [rank]);
-  }
 
   const Nr = order.length,
         Nb = order[0].length;

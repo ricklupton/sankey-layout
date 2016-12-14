@@ -53,6 +53,37 @@ test('combined layout', t => {
 });
 
 
+test('allows ordering without band lists', t => {
+  const links = [
+    {source: 'A', target: 'B', value: 1},
+    {source: 'A', target: 'C', value: 1},
+    {source: 'B', target: 'D', value: 1},
+  ];
+
+  const orderWithBands = [
+    [['A']],
+    [['B', 'C']],
+    [['D']],
+  ];
+
+  const orderWithoutBands = [
+    ['A'],
+    ['B', 'C'],
+    ['D'],
+  ];
+
+  const layout1 = sankeyLayout(),
+        layout2 = sankeyLayout();
+
+  layout1(links, [], {order: orderWithBands});
+  layout2(links, [], {order: orderWithoutBands});
+
+  t.deepEqual(layout1.nodes(), layout2.nodes());
+  t.deepEqual(layout1.links(), layout2.links());
+  t.end();
+});
+
+
 test('layout: works with empty input', t => {
   t.doesNotThrow(() => {
     sankeyLayout()([], []);

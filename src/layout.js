@@ -12,6 +12,7 @@ import justified from './node-positioning/justified';
 import orderEdges from './edge-ordering';
 import linkLayout from './edge-positioning';
 
+import isArray from 'lodash.isarray';
 
 /**
  * Sankey layout
@@ -36,7 +37,7 @@ export default function sankeyLayout() {
 
     const G = createGraph(nodesIn, linksIn);
 
-    if (data.order == null) {
+    if (!data.order) {
       // Assign ranks
       assignRanks(G, data.rankSets || []);
       addDummyNodes(G);
@@ -44,8 +45,16 @@ export default function sankeyLayout() {
       // Assign orders within ranks
       order = ordering(G);
     } else {
+      order = data.order;
+
+      // Add a single band, if there are none specified
+      console.log('order', order, data.order);
+      if (order.length > 0 && order[0].length > 0 && !isArray(order[0][0])) {
+        order = order.map(rank => [rank]);
+      }
+
       // filter order to only include known nodes
-      order = data.order.map(
+      order = order.map(
         bands => bands.map(
           nodes => nodes.filter(
             n => G.node(n) !== undefined)));

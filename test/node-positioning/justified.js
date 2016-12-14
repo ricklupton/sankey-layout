@@ -198,8 +198,8 @@ function example4to1() {
   G.nodes().forEach(u => G.setNode(u, { data: {} }));
 
   let order = [
-    ['0', '1', '2', '3'],
-    ['4'],
+    [['0', '1', '2', '3']],
+    [['4']],
   ];
 
   return {G, order};
